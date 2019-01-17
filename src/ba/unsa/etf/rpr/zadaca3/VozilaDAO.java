@@ -2,7 +2,7 @@ package ba.unsa.etf.rpr.zadaca3;
 
 import javafx.collections.ObservableList;
 
-public interface VozilaDAO {
+public interface VozilaDAO {    // Interfejs
 
     ObservableList<Vlasnik> getVlasnici();
     ObservableList<Mjesto> getMjesta();
