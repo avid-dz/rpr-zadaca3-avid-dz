@@ -88,22 +88,58 @@ public class VozilaDAOBaza implements VozilaDAO {
 
     public ObservableList<Mjesto> getMjesta() {
         ObservableList<Mjesto> mjesta = FXCollections.observableArrayList();
+        try {
+            ResultSet rezultat1 = psDajMjesta.executeQuery();
+            while (rezultat1.next()) {
+                int idMjesta = rezultat1.getInt(1);
+                String nazivMjesta = rezultat1.getString(2);
+                String postanskiBrojMjesta = rezultat1.getString(3);
+                Mjesto trazeni = new Mjesto(idMjesta, nazivMjesta, postanskiBrojMjesta);
+                mjesta.add(trazeni);
+            }
+            rezultat1.close();
+        } catch (Exception e) {
+
+        }
         return mjesta;
     }
 
     public ObservableList<Proizvodjac> getProizvodjaci() {
         ObservableList<Proizvodjac> proizvodjaci = FXCollections.observableArrayList();
+        try {
+            ResultSet rezultat1 = psDajProizvodjace.executeQuery();
+            while (rezultat1.next()) {
+                int idProizvodjaca = rezultat1.getInt(1);
+                String nazivProizvodjaca = rezultat1.getString(2);
+                Proizvodjac trazeni = new Proizvodjac(idProizvodjaca, nazivProizvodjaca);
+                proizvodjaci.add(trazeni);
+            }
+            rezultat1.close();
+        } catch (Exception e) {
+
+        }
         return proizvodjaci;
     }
 
     public ObservableList<Vozilo> getVozila() {
         ObservableList<Vozilo> vozila = FXCollections.observableArrayList();
-        Proizvodjac renault = new Proizvodjac(2, "Renault");
-        Mjesto sarajevo = new Mjesto(1, "Sarajevo", "71000");
-        Vlasnik vlasnik = new Vlasnik(2, "Test", "Testovic", "Te", LocalDate.now(), sarajevo,
-                "Prva ulica 1", sarajevo, "1234567890");
-        Vozilo vozilo = new Vozilo(0, renault, "Megane", "98765", "E12-K-987", vlasnik);
-        vozila.add(vozilo);
+        try {
+            ResultSet rezultat1 = psDajVozila.executeQuery();
+            while (rezultat1.next()) {
+                int idVozila = rezultat1.getInt(1);
+                int idProizvodjaca = rezultat1.getInt(2);
+                String model = rezultat1.getString(3);
+                String brojSasije = rezultat1.getString(4);
+                String brojTablica = rezultat1.getString(5);
+                int idVlasnika = rezultat1.getInt(6);
+                Vozilo trazeni = new Vozilo(idVozila, nadjiProizvodjacaPoIdju(idProizvodjaca), model, brojSasije,
+                        brojTablica, nadjiVlasnikaPoIdju(idVlasnika));
+                vozila.add(trazeni);
+            }
+            rezultat1.close();
+        } catch (Exception e) {
+
+        }
         return vozila;
     }
 
