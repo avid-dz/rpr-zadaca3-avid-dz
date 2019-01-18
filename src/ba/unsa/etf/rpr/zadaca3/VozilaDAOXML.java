@@ -4,6 +4,10 @@ import javafx.collections.ObservableList;
 
 public class VozilaDAOXML implements VozilaDAO {
 
+    public VozilaDAOXML() {
+
+    }
+
     public ObservableList<Vlasnik> getVlasnici() {
         return null;
     }
