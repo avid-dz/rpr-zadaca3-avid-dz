@@ -98,4 +98,8 @@ public class Vlasnik {
     public void setJmbg(String jmbg) {
         this.jmbg = jmbg;
     }
+
+    public String getImeIPrezime() {
+        return ime + " " + prezime;
+    }
 }
