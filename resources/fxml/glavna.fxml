@@ -5,9 +5,7 @@
 <?import javafx.scene.control.cell.*?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-            prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ba.unsa.etf.rpr.zadaca3.Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="432.0" prefWidth="642.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ba.unsa.etf.rpr.zadaca3.Controller">
     <stylesheets>
         <URL value="@/css/glavnaStyle.css" />
     </stylesheets>
@@ -51,7 +49,7 @@
                                     <PropertyValueFactory property="id" />
                                  </cellValueFactory>
                               </TableColumn>
-                              <TableColumn fx:id="kolonaImeIPrezimeVlasnika" maxWidth="1.7976931348623157E308" prefWidth="147.0" text="Ime i prezime" >
+                              <TableColumn fx:id="kolonaImeIPrezimeVlasnika" maxWidth="1.7976931348623157E308" prefWidth="147.0" text="Ime i prezime">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="imeIPrezime" />
                                 </cellValueFactory>
@@ -87,20 +85,20 @@
                               </TableColumn>
                               <TableColumn fx:id="kolonaNazivProizvodjacaVozila" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="145.0" text="Naziv proizvođača">
                                  <cellValueFactory>
-                                    <PropertyValueFactory property="naziv" />
+                                    <PropertyValueFactory property="nazivProizvodjaca" />
                                  </cellValueFactory>
                               </TableColumn>
-                              <TableColumn fx:id="kolonaNazivModelaVozila" maxWidth="1.7976931348623157E308" prefWidth="159.0" text="Naziv modela">
+                              <TableColumn fx:id="kolonaNazivModelaVozila" maxWidth="1.7976931348623157E308" prefWidth="171.0" text="Naziv modela">
                                  <cellValueFactory>
                                     <PropertyValueFactory property="model" />
                                  </cellValueFactory>
                               </TableColumn>
-                              <TableColumn fx:id="kolonaBrojSasijeVozila" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="96.0" text="Broj šasije">
+                              <TableColumn fx:id="kolonaBrojSasijeVozila" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="120.0" text="Broj šasije">
                                <cellValueFactory>
                                    <PropertyValueFactory property="brojSasije" />
                                </cellValueFactory>
                            </TableColumn>
-                              <TableColumn fx:id="kolonaBrojRegistarskihTablicaVozila" maxWidth="1.7976931348623157E308" prefWidth="144.0" text="Broj registarskih tablica">
+                              <TableColumn fx:id="kolonaBrojRegistarskihTablicaVozila" maxWidth="1.7976931348623157E308" prefWidth="151.0" text="Broj registarskih tablica">
                                <cellValueFactory>
                                    <PropertyValueFactory property="brojTablica" />
                                </cellValueFactory>

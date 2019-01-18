@@ -26,7 +26,5 @@ public class Controller {
         menuXml.setSelected(false);
         tabelaVlasnici.setItems(vozilaDAO.getVlasnici());
         tabelaVozilo.setItems(vozilaDAO.getVozila());
-
-
     }
 }

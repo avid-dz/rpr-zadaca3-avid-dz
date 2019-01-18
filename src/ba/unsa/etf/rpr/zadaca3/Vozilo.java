@@ -63,4 +63,8 @@ public class Vozilo {
     public void setVlasnik(Vlasnik vlasnik) {
         this.vlasnik = vlasnik;
     }
+
+    public String getNazivProizvodjaca() {
+        return proizvodjac.getNaziv();
+    }
 }

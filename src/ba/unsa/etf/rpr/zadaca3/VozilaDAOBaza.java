@@ -22,7 +22,14 @@ public class VozilaDAOBaza implements VozilaDAO {
     }
 
     public ObservableList<Vozilo> getVozila() {
-        return FXCollections.observableArrayList();
+        ObservableList<Vozilo> vozila = FXCollections.observableArrayList();
+        Proizvodjac renault = new Proizvodjac(2, "Renault");
+        Mjesto sarajevo = new Mjesto(1, "Sarajevo", "71000");
+        Vlasnik vlasnik = new Vlasnik(2, "Test", "Testovic", "Te", LocalDate.now(), sarajevo,
+                "Prva ulica 1", sarajevo, "1234567890");
+        Vozilo vozilo = new Vozilo(0, renault, "Megane", "98765", "E12-K-987", vlasnik);
+        vozila.add(vozilo);
+        return vozila;
     }
 
     public void dodajVlasnika(Vlasnik testTestovic) {
