@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="432.0" prefWidth="642.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ba.unsa.etf.rpr.zadaca3.Controller">
+    <stylesheets>
+        <URL value="@/css/glavnaStyle.css" />
+    </stylesheets>
+    <top>
+        <VBox BorderPane.alignment="CENTER">
+            <children>
+                <MenuBar>
+                    <menus>
+                        <Menu fx:id="menuOpcije" text="_Opcije">
+                     <items>
+                        <RadioMenuItem fx:id="menuDb" mnemonicParsing="false" text="SQLite" />
+                        <RadioMenuItem fx:id="menuXml" mnemonicParsing="false" text="XML" />
+                     </items>
+                        </Menu>
+                    </menus>
+                </MenuBar>
+            </children>
+        </VBox>
+    </top>
+    <bottom>
+        <HBox prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label fx:id="statusMsg" styleClass="statusBar" />
+            </children>
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding>
+        </HBox>
+    </bottom>
+   <center>
+      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <tabs>
+          <Tab fx:id="vlasniciTab" text="Vlasnici">
+               <content>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <center>
+                        <TableView fx:id="tabelaVlasnici" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                           <columns>
+                              <TableColumn fx:id="kolonaIdVlasnika" maxWidth="1.7976931348623157E308" prefWidth="68.0" text="ID">
+                                 <cellValueFactory>
+                                    <PropertyValueFactory property="id" />
+                                 </cellValueFactory>
+                              </TableColumn>
+                              <TableColumn fx:id="kolonaImeIPrezimeVlasnika" maxWidth="1.7976931348623157E308" prefWidth="147.0" text="Ime i prezime">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="imeIPrezime" />
+                                </cellValueFactory>
+                              </TableColumn>
+                              <TableColumn fx:id="kolonaJmbgVlasnika" maxWidth="1.7976931348623157E308" prefWidth="143.0" text="JMBG">
+                                 <cellValueFactory>
+                                    <PropertyValueFactory property="jmbg" />
+                                 </cellValueFactory>
+                              </TableColumn>
+                           </columns>
+                        </TableView>
+                     </center>
+                     <top>
+                        <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                          <items>
+                            <Button mnemonicParsing="false" text="Button" />
+                          </items>
+                        </ToolBar>
+                     </top>
+                  </BorderPane>
+               </content>
+          </Tab>
+          <Tab fx:id="vozilaTab" text="Vozila">
+               <content>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <center>
+                        <TableView fx:id="tabelaVozilo" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                           <columns>
+                              <TableColumn fx:id="kolonaIdVozila" maxWidth="1.7976931348623157E308" prefWidth="53.99998474121094" text="ID">
+                                 <cellValueFactory>
+                                    <PropertyValueFactory property="id" />
+                                 </cellValueFactory>
+                              </TableColumn>
+                              <TableColumn fx:id="kolonaNazivProizvodjacaVozila" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="145.0" text="Naziv proizvođača">
+                                 <cellValueFactory>
+                                    <PropertyValueFactory property="nazivProizvodjaca" />
+                                 </cellValueFactory>
+                              </TableColumn>
+                              <TableColumn fx:id="kolonaNazivModelaVozila" maxWidth="1.7976931348623157E308" prefWidth="171.0" text="Naziv modela">
+                                 <cellValueFactory>
+                                    <PropertyValueFactory property="model" />
+                                 </cellValueFactory>
+                              </TableColumn>
+                              <TableColumn fx:id="kolonaBrojSasijeVozila" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="120.0" text="Broj šasije">
+                               <cellValueFactory>
+                                   <PropertyValueFactory property="brojSasije" />
+                               </cellValueFactory>
+                           </TableColumn>
+                              <TableColumn fx:id="kolonaBrojRegistarskihTablicaVozila" maxWidth="1.7976931348623157E308" prefWidth="151.0" text="Broj registarskih tablica">
+                               <cellValueFactory>
+                                   <PropertyValueFactory property="brojTablica" />
+                               </cellValueFactory>
+                              </TableColumn>
+                           </columns>
+                        </TableView>
+                     </center>
+                     <top>
+                        <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                          <items>
+                            <Button mnemonicParsing="false" text="Button" />
+                          </items>
+                        </ToolBar>
+                     </top>
+                  </BorderPane>
+               </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </center>
+</BorderPane>

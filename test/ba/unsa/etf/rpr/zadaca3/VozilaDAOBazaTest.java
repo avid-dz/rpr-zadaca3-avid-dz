@@ -1,18 +1,11 @@
 package ba.unsa.etf.rpr.zadaca3;
 
 import javafx.collections.ObservableList;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Files;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -78,7 +71,7 @@ class VozilaDAOBazaTest {
         ObservableList<Proizvodjac> proizvodjaci = dao.getProizvodjaci();
         assertEquals(3, proizvodjaci.size());
         assertEquals("Renault", proizvodjaci.get(1).getNaziv());
-        assertEquals("Ford", proizvodjaci.get(2).getNaziv());
+        assertEquals("Volkswagen", proizvodjaci.get(2).getNaziv());
     }
 
     @Test
@@ -234,9 +227,9 @@ class VozilaDAOBazaTest {
         // Da li se hyundai zaista dodao u listu proizvođača?
         ObservableList<Proizvodjac> proizvodjaci = dao.getProizvodjaci();
         assertEquals(4, proizvodjaci.size());
-        assertEquals("Hyundai", proizvodjaci.get(3).getNaziv());
+        assertEquals("Hyundai", proizvodjaci.get(1).getNaziv());
         // Trebao bi dobiti Id 4
-        assertEquals(4, proizvodjaci.get(3).getId());
+        assertEquals(4, proizvodjaci.get(1).getId());
     }
 
     @Test
@@ -258,9 +251,9 @@ class VozilaDAOBazaTest {
         // Da li se hyundai zaista dodao u listu proizvođača?
         ObservableList<Proizvodjac> proizvodjaci = dao.getProizvodjaci();
         assertEquals(4, proizvodjaci.size());
-        assertEquals("Hyundai", proizvodjaci.get(3).getNaziv());
+        assertEquals("Hyundai", proizvodjaci.get(1).getNaziv());
         // Trebao bi dobiti Id 4
-        assertEquals(4, proizvodjaci.get(3).getId());
+        assertEquals(4, proizvodjaci.get(1).getId());
     }
 
     @Test

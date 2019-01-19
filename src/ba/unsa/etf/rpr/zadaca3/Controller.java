@@ -18,6 +18,11 @@ public class Controller {
         vozilaDAO = new VozilaDAOBaza();
     }
 
+    public void finalize() {
+        vozilaDAO.close();
+        vozilaDAO = null;
+    }
+
     @FXML
     public void initialize() {
         tabelaVlasnici.setEditable(true);
