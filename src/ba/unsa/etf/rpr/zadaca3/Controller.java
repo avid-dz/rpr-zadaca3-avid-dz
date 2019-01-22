@@ -71,7 +71,7 @@ public class Controller {
                     prikazProzoraZaGreskuBrisanjeVlasnika();
                     return;
                 }
-                tabelaVlasnici.refresh();
+                tabelaVlasnici.setItems(vozilaDAO.getVlasnici());
                 tabelaVlasnici.getSelectionModel().clearSelection();
             }
             else if (izborKorisnika == ButtonType.CANCEL) {
@@ -88,7 +88,7 @@ public class Controller {
         potvrda.showAndWait().ifPresent(izborKorisnika -> {
             if (izborKorisnika == ButtonType.OK) {
                 vozilaDAO.obrisiVozilo(trenutnoOdabranoVozilo);
-                tabelaVozilo.refresh();
+                tabelaVozilo.setItems(vozilaDAO.getVozila());
                 tabelaVozilo.getSelectionModel().clearSelection();
             }
             else if (izborKorisnika == ButtonType.CANCEL) {
