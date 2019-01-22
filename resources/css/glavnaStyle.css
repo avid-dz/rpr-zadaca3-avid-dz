@@ -1,0 +1,13 @@
+.tbAdd {
+    -fx-graphic: url("/img/add.png");
+}
+.tbEdit {
+    -fx-graphic: url("/img/edit.png");
+}
+.tbRemove {
+    -fx-graphic: url("/img/remove.png");
+}
+
+.tbButton:pressed {
+    -fx-background-color: blue;
+}
