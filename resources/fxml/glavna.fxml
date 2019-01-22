@@ -16,8 +16,8 @@
                     <menus>
                         <Menu fx:id="menuOpcije" text="_Opcije">
                      <items>
-                        <RadioMenuItem fx:id="menuDb" mnemonicParsing="false" text="SQLite" />
-                        <RadioMenuItem fx:id="menuXml" mnemonicParsing="false" text="XML" />
+                        <RadioMenuItem fx:id="menuDb" mnemonicParsing="false" text="SQLite" onAction="#menuDbEventHandler" />
+                        <RadioMenuItem fx:id="menuXml" mnemonicParsing="false" text="XML" onAction="#menuXmlEventHandler" />
                      </items>
                         </Menu>
                     </menus>
