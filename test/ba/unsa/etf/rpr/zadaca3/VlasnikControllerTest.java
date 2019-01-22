@@ -7,19 +7,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
-import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
@@ -28,6 +22,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.LocalDate;
+
+import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(ApplicationExtension.class)
 class VlasnikControllerTest {
@@ -190,9 +187,16 @@ class VlasnikControllerTest {
 
         robot.clickOn("#postanskiBrojField");
         robot.press(KeyCode.CONTROL).press(KeyCode.A).release(KeyCode.A).release(KeyCode.CONTROL);
-        robot.write("73000");
+        robot.write("75000");
 
         robot.clickOn("#okButton");
+
+        // Dajemo vremena da se validira poštanski broj
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         ime = robot.lookup("#postanskiBrojField").queryAs(TextField.class);
         bg = ime.getBackground();
@@ -318,10 +322,18 @@ class VlasnikControllerTest {
         robot.write("Zenica");
 
         robot.clickOn("#postanskiBrojField");
-        robot.write("73000");
+        robot.write("75000");
 
         // Sve validno, prozor se zatvara
         robot.clickOn("#okButton");
+
+        // Dajemo vremena da se validira poštanski broj
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         assertFalse(theStage.isShowing());
 
         // Da li je novi vlasnik u bazi
@@ -344,6 +356,6 @@ class VlasnikControllerTest {
         assertEquals(3, mjesta.size());
         assertEquals(3, mjesta.get(2).getId());
         assertEquals("Zenica", mjesta.get(2).getNaziv());
-        assertEquals("73000", mjesta.get(2).getPostanskiBroj());
+        assertEquals("75000", mjesta.get(2).getPostanskiBroj());
     }
 }

@@ -1,26 +1,19 @@
+
 package ba.unsa.etf.rpr.zadaca3;
 
-import static org.junit.jupiter.api.Assertions.*;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
-import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
@@ -28,8 +21,9 @@ import org.testfx.framework.junit5.Start;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.time.LocalDate;
+
+import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(ApplicationExtension.class)
 class VoziloControllerTest {
@@ -274,7 +268,8 @@ class VoziloControllerTest {
         // Provjeravamo da li je Skoda zaista dodata u proizvodjace
         ObservableList<Proizvodjac> proizvodjacs = dao.getProizvodjaci();
         assertEquals(4, proizvodjacs.size());
-        assertEquals(4, proizvodjacs.get(3).getId());
-        assertEquals("Skoda", proizvodjacs.get(3).getNaziv());
+        // Ovo će vratiti abecedno, tako da će škoda biti na indeksu 2 (poslije Renault a prije Volskwagen)
+        assertEquals(4, proizvodjacs.get(2).getId());
+        assertEquals("Skoda", proizvodjacs.get(2).getNaziv());
     }
 }

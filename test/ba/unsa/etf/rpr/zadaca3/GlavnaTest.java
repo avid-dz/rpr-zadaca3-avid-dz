@@ -1,23 +1,18 @@
 package ba.unsa.etf.rpr.zadaca3;
 
-import static org.junit.jupiter.api.Assertions.*;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DialogPane;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
@@ -25,8 +20,9 @@ import org.testfx.framework.junit5.Start;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 @ExtendWith(ApplicationExtension.class)
 class GlavnaTest {
@@ -208,8 +204,9 @@ class GlavnaTest {
         // Mostar je i dalje u bazi
         ObservableList<Mjesto> mjesta = dao.getMjesta();
         assertEquals(3, mjesta.size());
-        assertEquals("Mostar", mjesta.get(2).getNaziv());
-        assertEquals("88000", mjesta.get(2).getPostanskiBroj());
+        // Ovo će vratiti abecedno, tako da će Mostar biti na indeksu 0 (prije Tuzle i Sarajeva)
+        assertEquals("Mostar", mjesta.get(0).getNaziv());
+        assertEquals("88000", mjesta.get(0).getPostanskiBroj());
     }
 
     @Test
@@ -310,8 +307,9 @@ class GlavnaTest {
         // Mostar je i dalje u bazi
         ObservableList<Mjesto> mjesta = mydao.getMjesta();
         assertEquals(3, mjesta.size());
-        assertEquals("Mostar", mjesta.get(2).getNaziv());
-        assertEquals("88000", mjesta.get(2).getPostanskiBroj());
+        // Ovo će vratiti abecedno, tako da će Mostar biti na indeksu 0 (prije Tuzle i Sarajeva)
+        assertEquals("Mostar", mjesta.get(0).getNaziv());
+        assertEquals("88000", mjesta.get(0).getPostanskiBroj());
         mydao.close();
 
         // Vraćam se na Db

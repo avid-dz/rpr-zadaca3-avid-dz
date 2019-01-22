@@ -70,8 +70,9 @@ class VozilaDAOBazaTest {
         initDb();
         ObservableList<Proizvodjac> proizvodjaci = dao.getProizvodjaci();
         assertEquals(3, proizvodjaci.size());
+        // Ovo će vratiti abecedno
+        assertEquals("Ford", proizvodjaci.get(0).getNaziv());
         assertEquals("Renault", proizvodjaci.get(1).getNaziv());
-        assertEquals("Volkswagen", proizvodjaci.get(2).getNaziv());
     }
 
     @Test
@@ -227,6 +228,7 @@ class VozilaDAOBazaTest {
         // Da li se hyundai zaista dodao u listu proizvođača?
         ObservableList<Proizvodjac> proizvodjaci = dao.getProizvodjaci();
         assertEquals(4, proizvodjaci.size());
+        // Ovo će vratiti abecedno, tako da će Hyundai biti na indeksu 1 (poslije Ford a prije Renault)
         assertEquals("Hyundai", proizvodjaci.get(1).getNaziv());
         // Trebao bi dobiti Id 4
         assertEquals(4, proizvodjaci.get(1).getId());
@@ -251,6 +253,7 @@ class VozilaDAOBazaTest {
         // Da li se hyundai zaista dodao u listu proizvođača?
         ObservableList<Proizvodjac> proizvodjaci = dao.getProizvodjaci();
         assertEquals(4, proizvodjaci.size());
+        // Ovo će vratiti abecedno, tako da će Hyundai biti na indeksu 1 (poslije Ford a prije Renault)
         assertEquals("Hyundai", proizvodjaci.get(1).getNaziv());
         // Trebao bi dobiti Id 4
         assertEquals(4, proizvodjaci.get(1).getId());
