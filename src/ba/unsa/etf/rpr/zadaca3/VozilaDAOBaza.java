@@ -205,6 +205,7 @@ public class VozilaDAOBaza implements VozilaDAO {
     }
 
     public void dodajVlasnika(Vlasnik vlasnik) {
+        if (vlasnik == null) return;
         init();
         maxNedozvoljeniIdVlasnika++;
         vlasnik.setId(maxNedozvoljeniIdVlasnika);
@@ -242,6 +243,7 @@ public class VozilaDAOBaza implements VozilaDAO {
     }
 
     public void promijeniVlasnika(Vlasnik vlasnik) {
+        if (vlasnik == null) return;
         init();
         try {
             if (nadjiMjestoPoIdju(vlasnik.getMjestoRodjenja().getId()) == null) {
@@ -277,13 +279,14 @@ public class VozilaDAOBaza implements VozilaDAO {
     }
 
     public void obrisiVlasnika(Vlasnik vlasnik) {
+        if (vlasnik == null) return;
         init();
         try {
             psPretragaIdjevaVlasnikaIzVozila.setInt(1, vlasnik.getId());
             ResultSet rezultat1 = psPretragaIdjevaVlasnikaIzVozila.executeQuery();
             if (rezultat1.next()) {
                 close();
-                throw new IllegalArgumentException("Vlasnik vec posjeduje bar jedno vozilo!");
+                throw new IllegalArgumentException("Vlasnik posjeduje bar jedno vozilo!");
             }
             psObrisiVlasnika.setInt(1, vlasnik.getId());
             psObrisiVlasnika.executeUpdate();
@@ -294,6 +297,7 @@ public class VozilaDAOBaza implements VozilaDAO {
     }
 
     public void dodajVozilo(Vozilo vozilo) {
+        if (vozilo == null) return;
         init();
         if (nadjiVlasnikaPoIdju(vozilo.getVlasnik().getId()) == null) {
             close();
@@ -323,6 +327,7 @@ public class VozilaDAOBaza implements VozilaDAO {
     }
 
     public void promijeniVozilo(Vozilo vozilo) {
+        if (vozilo == null) return;
         init();
         try {
             if (nadjiProizvodjacaPoIdju(vozilo.getProizvodjac().getId()) == null) {
