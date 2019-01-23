@@ -47,6 +47,19 @@ public class VoziloController {
         validacijaBrojaTablica(brojTablicaField.getText());
         validacijaProizvodjaca(proizvodjacCombo);
         if (validnaForma()) {
+            Proizvodjac proizvodjac = new Proizvodjac(0, (String) proizvodjacCombo.getValue());
+            if (vozilo == null) {
+                vozilaDAO.dodajVozilo(new Vozilo(0, proizvodjac, modelField.getText(), brojSasijeField.getText(),
+                        brojTablicaField.getText(), (Vlasnik) vlasnikCombo.getValue()));
+            }
+            else {
+                vozilo.setVlasnik((Vlasnik) vlasnikCombo.getValue());
+                vozilo.setModel(modelField.getText());
+                vozilo.setBrojSasije(brojSasijeField.getText());
+                vozilo.setBrojTablica(brojTablicaField.getText());
+                vozilo.setProizvodjac(proizvodjac);
+                vozilaDAO.promijeniVozilo(vozilo);
+            }
             Stage stage = (Stage) okButton.getScene().getWindow();
             stage.close();
         }

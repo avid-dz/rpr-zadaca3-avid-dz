@@ -21,6 +21,7 @@ public class VozilaDAOBaza implements VozilaDAO {
     private PreparedStatement psNadjiVozilo;
     private PreparedStatement psNadjiVlasnika;
     private PreparedStatement psNadjiProizvodjaca;
+    private PreparedStatement psNadjiProizvodjacaPoNazivu;
     private PreparedStatement psMaxIdVlasnika;
     private PreparedStatement psMaxIdMjesta;
     private PreparedStatement psMaxIdProizvodjaca;
@@ -64,6 +65,8 @@ public class VozilaDAOBaza implements VozilaDAO {
                     ("SELECT * FROM vozilo WHERE id=?");
             psNadjiProizvodjaca = connection.prepareStatement
                     ("SELECT * FROM proizvodjac WHERE id=?");
+            psNadjiProizvodjacaPoNazivu = connection.prepareStatement
+                    ("SELECT * FROM proizvodjac WHERE naziv=?");
             psMaxIdVlasnika = connection.prepareStatement
                     ("SELECT MAX(id) FROM vlasnik");
             psMaxIdVozila = connection.prepareStatement
@@ -306,7 +309,7 @@ public class VozilaDAOBaza implements VozilaDAO {
         maxNedozvoljeniIdVozila++;
         vozilo.setId(maxNedozvoljeniIdVozila);
         try {
-            if (nadjiProizvodjacaPoIdju(vozilo.getProizvodjac().getId()) == null) {
+            if (nadjiProizvodjacaPoNazivu(vozilo.getProizvodjac().getNaziv()) == null) {
                 maxNedozvoljeniIdProizvodjaca++;
                 vozilo.getProizvodjac().setId(maxNedozvoljeniIdProizvodjaca);
                 psDodajProizvodjaca.setInt(1, vozilo.getProizvodjac().getId());
@@ -330,7 +333,7 @@ public class VozilaDAOBaza implements VozilaDAO {
         if (vozilo == null) return;
         init();
         try {
-            if (nadjiProizvodjacaPoIdju(vozilo.getProizvodjac().getId()) == null) {
+            if (nadjiProizvodjacaPoNazivu(vozilo.getProizvodjac().getNaziv()) == null) {
                 maxNedozvoljeniIdProizvodjaca++;
                 vozilo.getProizvodjac().setId(maxNedozvoljeniIdProizvodjaca);
                 psDodajProizvodjaca.setInt(1, vozilo.getProizvodjac().getId());
@@ -395,6 +398,20 @@ public class VozilaDAOBaza implements VozilaDAO {
             ResultSet rezultat1 = psNadjiProizvodjaca.executeQuery();
             if (!rezultat1.next()) return null;
             naziv = rezultat1.getString(2);
+            rezultat1.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new Proizvodjac(id, naziv);
+    }
+
+    private Proizvodjac nadjiProizvodjacaPoNazivu(String naziv) {
+        int id = 0;
+        try {
+            psNadjiProizvodjacaPoNazivu.setString(1, naziv);
+            ResultSet rezultat1 = psNadjiProizvodjacaPoNazivu.executeQuery();
+            if (!rezultat1.next()) return null;
+            id = rezultat1.getInt(1);
             rezultat1.close();
         } catch (SQLException e) {
             e.printStackTrace();
