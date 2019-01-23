@@ -2,7 +2,7 @@ package ba.unsa.etf.rpr.zadaca3;
 
 import java.time.LocalDate;
 
-public class Vlasnik {
+public class Vlasnik implements Comparable<Vlasnik> {
 
     private int id;
     private String ime;
@@ -101,5 +101,16 @@ public class Vlasnik {
 
     public String getImeIPrezime() {
         return ime + " " + prezime;
+    }
+
+    @Override
+    public String toString() {
+        return prezime + " " + ime;
+    }
+
+
+    @Override
+    public int compareTo(Vlasnik o) {
+        return toString().compareTo(o.toString());
     }
 }
