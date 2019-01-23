@@ -3,7 +3,13 @@ package ba.unsa.etf.rpr.zadaca3;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
+
+import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
 
 public class Controller {
 
@@ -40,6 +46,7 @@ public class Controller {
     }
 
     public void menuDbEventHandler(ActionEvent actionEvent) {
+        menuDb.setSelected(true);
         menuXml.setSelected(false);
         vozilaDAO = new VozilaDAOBaza();
         tabelaVlasnici.getSelectionModel().clearSelection();
@@ -49,6 +56,7 @@ public class Controller {
     }
 
     public void menuXmlEventHandler(ActionEvent actionEvent) {
+        menuXml.setSelected(true);
         menuDb.setSelected(false);
         vozilaDAO = new VozilaDAOXML();
         tabelaVlasnici.getSelectionModel().clearSelection();
@@ -103,5 +111,24 @@ public class Controller {
         greska.setHeaderText("Ne možete obrisati ovog vlasnika.");
         greska.setContentText("Naime, vlasnik posjeduje bar jedno vozilo.");
         greska.show();
+    }
+
+    public void addVlasnikEventHandler(ActionEvent actionEvent) {
+        Stage noviStage = null;
+        FXMLLoader loader = null;
+        VlasnikController vlasnikController = null;
+        try {
+            loader = new FXMLLoader(getClass().getResource("/fxml/vlasnik.fxml"));
+            vlasnikController = new VlasnikController(vozilaDAO, null);
+            loader.setController(vlasnikController);
+            Parent root = loader.load();
+            noviStage = new Stage();
+            noviStage.setResizable(false);
+            noviStage.setTitle("Dodavanje novog vlasnika");
+            noviStage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+            noviStage.show();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 }
