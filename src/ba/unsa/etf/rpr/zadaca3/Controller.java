@@ -131,4 +131,23 @@ public class Controller {
             exception.printStackTrace();
         }
     }
+
+    public void addVoziloEventHandler(ActionEvent actionEvent) {
+        Stage noviStage = null;
+        FXMLLoader loader = null;
+        VoziloController voziloController = null;
+        try {
+            loader = new FXMLLoader(getClass().getResource("/fxml/vozilo.fxml"));
+            voziloController = new VoziloController(vozilaDAO, null);
+            loader.setController(voziloController);
+            Parent root = loader.load();
+            noviStage = new Stage();
+            noviStage.setResizable(false);
+            noviStage.setTitle("Dodavanje novog vozila");
+            noviStage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+            noviStage.show();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
 }

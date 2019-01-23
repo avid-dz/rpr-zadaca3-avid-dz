@@ -1,7 +1,6 @@
 package ba.unsa.etf.rpr.zadaca3;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -11,6 +10,10 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -21,6 +24,7 @@ public class VlasnikController {
     private VozilaDAO vozilaDAO;
     private Vlasnik vlasnik;
     public Button cancelButton;
+    public Button okButton;
     public TextField imeField;
     public TextField prezimeField;
     public TextField imeRoditeljaField;
@@ -36,8 +40,8 @@ public class VlasnikController {
     private boolean validnaAdresaPrebivalistaVlasnika;
     private boolean validanJmbgVlasnika;
     private boolean validanDatumRodjenjaVlasnika;
-    private boolean validnoMjestoRodjenjaVlasnika;
-    private boolean validnoMjestoPrebivalistaVlasnika;
+    private boolean validnoMjestoRodjenjaVlasnika = true;
+    private boolean validnoMjestoPrebivalistaVlasnika = true;
     private boolean validanPostanskiBrojVlasnika;
     private int danIzJMBG;
     private int mjesecIzJMBG;
@@ -50,13 +54,6 @@ public class VlasnikController {
 
     @FXML
     public void initialize() {
-        validacijaImena(imeField.getText());
-        validacijaPrezimena(imeField.getText());
-        validacijaImenaRoditelja(imeRoditeljaField.getText());
-        validacijaAdresePrebivalista(adresaField.getText());
-        validacijaJmbg(jmbgField.getText());
-        validacijaDatumaRodjenja(datumField.getValue());
-
         datumField.setConverter(new StringConverter<LocalDate>() { // Ovo regulise format datuma u DatePickeru
             @Override
             public String toString(LocalDate datumZaPretvaranje) {
@@ -65,8 +62,8 @@ public class VlasnikController {
                         return DateTimeFormatter.ofPattern("M/d/yyyy").format(datumZaPretvaranje);
                     } catch (DateTimeException dte) { }
                 }
-                datumField.getStyleClass().removeAll("validField");
-                datumField.getStyleClass().add("invalidField");
+                /*datumField.getStyleClass().removeAll("validField");
+                datumField.getStyleClass().add("invalidField");*/
                 validanDatumRodjenjaVlasnika = false;
                 return "";
             }
@@ -77,54 +74,11 @@ public class VlasnikController {
                         return LocalDate.parse(string, DateTimeFormatter.ofPattern("M/d/yyyy"));
                     } catch (DateTimeParseException dtpe) { }
                 }
-                datumField.getStyleClass().removeAll("validField");
-                datumField.getStyleClass().add("invalidField");
+                /*datumField.getStyleClass().removeAll("validField");
+                datumField.getStyleClass().add("invalidField");*/
                 validanDatumRodjenjaVlasnika = false;
                 return null;
             }
-        });
-
-        imeField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String o, String n) {
-                validacijaImena(n);
-            }
-        });
-        prezimeField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String o, String n) {
-                validacijaPrezimena(n);
-            }
-        });
-        imeRoditeljaField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String o, String n) {
-                validacijaImenaRoditelja(n);
-            }
-        });
-        adresaField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String o, String n) {
-                validacijaAdresePrebivalista(n);
-            }
-        });
-        jmbgField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String o, String n) {
-                validacijaJmbg(n);
-                validacijaDatumaRodjenja(datumField.getValue());
-            }
-        });
-        jmbgField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String o, String n) {
-                validacijaJmbg(n);
-                validacijaDatumaRodjenja(datumField.getValue());
-            }
-        });
-        datumField.valueProperty().addListener((old, o, n) -> {
-            validacijaDatumaRodjenja(n);
-            validacijaJmbg(jmbgField.getText());
         });
     }
 
@@ -134,7 +88,17 @@ public class VlasnikController {
     }
 
     public void okEventHandler(ActionEvent actionEvent) {
-
+        validacijaImena(imeField.getText());
+        validacijaPrezimena(imeField.getText());
+        validacijaImenaRoditelja(imeRoditeljaField.getText());
+        validacijaAdresePrebivalista(adresaField.getText());
+        validacijaJmbg(jmbgField.getText());
+        validacijaDatumaRodjenja(datumField.getValue());
+        new Thread(() -> validacijaPostanskogBroja(postanskiBrojField.getText())).start();
+        if (validnaForma()) {
+            Stage stage = (Stage) okButton.getScene().getWindow();
+            stage.close();
+        }
     }
 
     private boolean validnoIme(String n) {
@@ -183,9 +147,9 @@ public class VlasnikController {
     private boolean validanDatumRodjenja(LocalDate n) {
         if (n == null) return false;
         if (n.isAfter(LocalDate.now())) return false;
-        if (n.getDayOfMonth() != danIzJMBG) return false;
+        /*if (n.getDayOfMonth() != danIzJMBG) return false;
         if (n.getMonthValue() != mjesecIzJMBG) return false;
-        if ((n.getYear() % 1000) != godinaIzJMBG) return false;
+        if ((n.getYear() % 1000) != godinaIzJMBG) return false;*/
         return true;
     }
 
@@ -263,6 +227,34 @@ public class VlasnikController {
             datumField.getStyleClass().removeAll("validField");
             datumField.getStyleClass().add("invalidField");
             validanDatumRodjenjaVlasnika = false;
+        }
+    }
+
+    private void validacijaPostanskogBroja(String n) {
+        try {
+            BufferedReader ulaz = new BufferedReader
+                    (new InputStreamReader(new URL("http://c9.etf.unsa.ba/proba/postanskiBroj.php?postanskiBroj="
+                            + postanskiBrojField.getText()).openStream(), StandardCharsets.UTF_8));
+            String procitano = "", line = null;
+            while ((line = ulaz.readLine()) != null) procitano = procitano + line;
+            if (procitano.contains("NOT")) {
+                Platform.runLater(() -> {
+                    postanskiBrojField.getStyleClass().removeAll("validField");
+                    postanskiBrojField.getStyleClass().add("invalidField");
+                    validanPostanskiBrojVlasnika = false;
+                });
+                Thread.sleep(180);
+            }
+            else {
+                Platform.runLater(() -> {
+                    postanskiBrojField.getStyleClass().removeAll("invalidField");
+                    postanskiBrojField.getStyleClass().add("validField");
+                    validanPostanskiBrojVlasnika = true;
+                });
+                Thread.sleep(180);
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
         }
     }
 
