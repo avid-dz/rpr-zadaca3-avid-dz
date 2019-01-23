@@ -25,4 +25,9 @@ public class Proizvodjac {
     public void setNaziv(String naziv) {
         this.naziv = naziv;
     }
+
+    @Override
+    public String toString() {
+        return naziv;
+    }
 }

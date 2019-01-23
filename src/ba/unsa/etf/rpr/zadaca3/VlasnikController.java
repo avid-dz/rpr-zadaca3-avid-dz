@@ -147,9 +147,9 @@ public class VlasnikController {
     private boolean validanDatumRodjenja(LocalDate n) {
         if (n == null) return false;
         if (n.isAfter(LocalDate.now())) return false;
-        /*if (n.getDayOfMonth() != danIzJMBG) return false;
+        if (n.getDayOfMonth() != danIzJMBG) return false;
         if (n.getMonthValue() != mjesecIzJMBG) return false;
-        if ((n.getYear() % 1000) != godinaIzJMBG) return false;*/
+        if ((n.getYear() % 1000) != godinaIzJMBG) return false;
         return true;
     }
 
