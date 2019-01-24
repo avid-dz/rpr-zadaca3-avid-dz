@@ -132,6 +132,9 @@ public class Controller {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
+        noviStage.setOnHiding(event -> {
+            Platform.runLater(() -> tabelaVlasnici.setItems(vozilaDAO.getVlasnici()));
+        });
     }
 
     public void addVoziloEventHandler(ActionEvent actionEvent) {

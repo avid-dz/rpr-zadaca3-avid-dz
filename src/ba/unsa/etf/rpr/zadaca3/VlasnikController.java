@@ -71,6 +71,7 @@ public class VlasnikController {
             if (!unijetoNovoMjesto) {
                 Platform.runLater(() -> postanskiBrojField.setText(postanski));
             }
+            else Platform.runLater(() -> postanskiBrojField.setText(""));
         });
 
         datumField.setConverter(new StringConverter<LocalDate>() { // Ovo regulise format datuma u DatePickeru
@@ -112,27 +113,42 @@ public class VlasnikController {
         validacijaMjestaRodjenja(mjestoRodjenja);
         validacijaMjestaPrebivalista(adresaMjesto);
         new Thread(() -> validacijaPostanskogBroja(postanskiBrojField.getText())).start();
-        if (validnaForma()) {
-            Mjesto mjestoPrebivalista = new Mjesto
-                    (0, adresaMjesto.getValue().toString(), postanskiBrojField.getText());
-            Mjesto mjestoRodjenjaVlasnika = new Mjesto
-                    (0, mjestoRodjenja.getValue().toString(), "");
-            if (vlasnik == null) {
-                vozilaDAO.dodajVlasnika(new Vlasnik(0, imeField.getText(), prezimeField.getText(),
-                        imeRoditeljaField.getText(), datumField.getValue(), mjestoRodjenja.getValue().toString(),
-                        adresaMjesto.getValue().toString(), jmbgField.getText());
-            }
-            else {
-                vlasnik.setVlasnik((Vlasnik) vlasnikCombo.getValue());
-                vlasnik.setModel(modelField.getText());
-                vlasnik.setBrojSasije(brojSasijeField.getText());
-                vlasnik.setBrojTablica(brojTablicaField.getText());
-                vlasnik.setProizvodjac(proizvodjac);
-                vozilaDAO.promijeniVlasnika(vlasnik);
-            }
-            Stage stage = (Stage) okButton.getScene().getWindow();
-            stage.close();
+        try {
+            Thread.sleep(4500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+        Platform.runLater(() -> {
+            if (validnaForma()) {
+                Mjesto mjestoPrebivalista = new Mjesto
+                        (0, adresaMjesto.getValue().toString(), postanskiBrojField.getText());
+                Mjesto mjestoRodjenjaVlasnika = new Mjesto
+                        (0, mjestoRodjenja.getValue().toString(), "");
+                if (vlasnik == null) {
+                    vozilaDAO.dodajVlasnika(new Vlasnik(0, imeField.getText(), prezimeField.getText(),
+                            imeRoditeljaField.getText(), datumField.getValue(), mjestoRodjenjaVlasnika,
+                            adresaField.getText(), mjestoPrebivalista, jmbgField.getText()));
+                }
+                else {
+                    vlasnik.setIme(imeField.getText());
+                    vlasnik.setPrezime(prezimeField.getText());
+                    vlasnik.setImeRoditelja(imeRoditeljaField.getText());
+                    vlasnik.setDatumRodjenja(datumField.getValue());
+                    vlasnik.setMjestoRodjenja(mjestoRodjenjaVlasnika);
+                    vlasnik.setAdresaPrebivalista(adresaField.getText());
+                    vlasnik.setMjestoPrebivalista(mjestoPrebivalista);
+                    vlasnik.setJmbg(jmbgField.getText());
+                    vozilaDAO.promijeniVlasnika(vlasnik);
+                }
+                Stage stage = (Stage) okButton.getScene().getWindow();
+                Platform.runLater(() -> stage.close());
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     private boolean validnoIme(String n) {
@@ -299,7 +315,7 @@ public class VlasnikController {
                     postanskiBrojField.getStyleClass().add("invalidField");
                     validanPostanskiBrojVlasnika = false;
                 });
-                Thread.sleep(180);
+                Thread.sleep(50);
             }
             else {
                 Platform.runLater(() -> {
@@ -307,7 +323,7 @@ public class VlasnikController {
                     postanskiBrojField.getStyleClass().add("validField");
                     validanPostanskiBrojVlasnika = true;
                 });
-                Thread.sleep(180);
+                Thread.sleep(50);
             }
         } catch(Exception e) {
             e.printStackTrace();

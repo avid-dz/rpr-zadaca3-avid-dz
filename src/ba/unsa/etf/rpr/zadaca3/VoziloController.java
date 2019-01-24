@@ -1,5 +1,6 @@
 package ba.unsa.etf.rpr.zadaca3;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -46,6 +47,11 @@ public class VoziloController {
         validacijaBrojaSasije(brojSasijeField.getText());
         validacijaBrojaTablica(brojTablicaField.getText());
         validacijaProizvodjaca(proizvodjacCombo);
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (validnaForma()) {
             Proizvodjac proizvodjac = new Proizvodjac(0, proizvodjacCombo.getValue().toString());
             if (vozilo == null) {
@@ -61,7 +67,7 @@ public class VoziloController {
                 vozilaDAO.promijeniVozilo(vozilo);
             }
             Stage stage = (Stage) okButton.getScene().getWindow();
-            stage.close();
+            Platform.runLater(() -> stage.close());
         }
     }
 
