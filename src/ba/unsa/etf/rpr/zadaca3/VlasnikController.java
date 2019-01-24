@@ -105,7 +105,7 @@ public class VlasnikController {
 
     public void okEventHandler(ActionEvent actionEvent) {
         validacijaImena(imeField.getText());
-        validacijaPrezimena(imeField.getText());
+        validacijaPrezimena(prezimeField.getText());
         validacijaImenaRoditelja(imeRoditeljaField.getText());
         validacijaAdresePrebivalista(adresaField.getText());
         validacijaJmbg(jmbgField.getText());
@@ -197,9 +197,11 @@ public class VlasnikController {
     private boolean validanDatumRodjenja(LocalDate n) {
         if (n == null) return false;
         if (n.isAfter(LocalDate.now())) return false;
-        if (n.getDayOfMonth() != danIzJMBG) return false;
-        if (n.getMonthValue() != mjesecIzJMBG) return false;
-        if ((n.getYear() % 1000) != godinaIzJMBG) return false;
+        if (validanJmbgVlasnika) {
+            if (n.getDayOfMonth() != danIzJMBG) return false;
+            if (n.getMonthValue() != mjesecIzJMBG) return false;
+            if ((n.getYear() % 1000) != godinaIzJMBG) return false;
+        }
         return true;
     }
 

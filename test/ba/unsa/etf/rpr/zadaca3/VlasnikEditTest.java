@@ -147,6 +147,7 @@ public class VlasnikEditTest {
         robot.clickOn("#datumField");
         robot.press(KeyCode.CONTROL).press(KeyCode.A).release(KeyCode.A).release(KeyCode.CONTROL);
         robot.write("1/1/2020");
+        robot.press(KeyCode.ENTER).release(KeyCode.ENTER);
 
         robot.clickOn("#okButton");
         assertTrue(theStage.isShowing());
@@ -162,6 +163,7 @@ public class VlasnikEditTest {
         robot.clickOn("#datumField");
         robot.press(KeyCode.CONTROL).press(KeyCode.A).release(KeyCode.A).release(KeyCode.CONTROL);
         robot.write("1/1/2018");
+        robot.press(KeyCode.ENTER).release(KeyCode.ENTER);
         robot.clickOn("#imeField");
         robot.press(KeyCode.CONTROL).press(KeyCode.A).release(KeyCode.A).release(KeyCode.CONTROL);
         robot.press(KeyCode.DELETE).release(KeyCode.DELETE);
@@ -278,6 +280,7 @@ public class VlasnikEditTest {
         robot.clickOn("#datumField");
         robot.press(KeyCode.CONTROL).press(KeyCode.A).release(KeyCode.A).release(KeyCode.CONTROL);
         robot.write("1/8/2003");
+        robot.press(KeyCode.ENTER).release(KeyCode.ENTER);
         robot.clickOn("#jmbgField");
         robot.press(KeyCode.CONTROL).press(KeyCode.A).release(KeyCode.A).release(KeyCode.CONTROL);
         robot.write("0801003500007");
