@@ -47,7 +47,7 @@ public class VoziloController {
         validacijaBrojaTablica(brojTablicaField.getText());
         validacijaProizvodjaca(proizvodjacCombo);
         if (validnaForma()) {
-            Proizvodjac proizvodjac = new Proizvodjac(0, (String) proizvodjacCombo.getValue());
+            Proizvodjac proizvodjac = new Proizvodjac(0, proizvodjacCombo.getValue().toString());
             if (vozilo == null) {
                 vozilaDAO.dodajVozilo(new Vozilo(0, proizvodjac, modelField.getText(), brojSasijeField.getText(),
                         brojTablicaField.getText(), (Vlasnik) vlasnikCombo.getValue()));

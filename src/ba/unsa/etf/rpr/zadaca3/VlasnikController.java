@@ -54,6 +54,25 @@ public class VlasnikController {
 
     @FXML
     public void initialize() {
+        mjestoRodjenja.setItems(vozilaDAO.getMjesta());
+        adresaMjesto.setItems(vozilaDAO.getMjesta());
+
+        adresaMjesto.valueProperty().addListener((old, o, n) -> {
+            boolean unijetoNovoMjesto = true;
+            int indeks = 0;
+            for (int i = 0; i < adresaMjesto.getItems().size(); i++) {
+                if (adresaMjesto.getItems().get(i).toString().equals(adresaMjesto.getValue())) {
+                    unijetoNovoMjesto = false;
+                    indeks = i;
+                    break;
+                }
+            }
+            String postanski = vozilaDAO.getMjesta().get(indeks).getPostanskiBroj();
+            if (!unijetoNovoMjesto) {
+                Platform.runLater(() -> postanskiBrojField.setText(postanski));
+            }
+        });
+
         datumField.setConverter(new StringConverter<LocalDate>() { // Ovo regulise format datuma u DatePickeru
             @Override
             public String toString(LocalDate datumZaPretvaranje) {
@@ -62,8 +81,6 @@ public class VlasnikController {
                         return DateTimeFormatter.ofPattern("M/d/yyyy").format(datumZaPretvaranje);
                     } catch (DateTimeException dte) { }
                 }
-                /*datumField.getStyleClass().removeAll("validField");
-                datumField.getStyleClass().add("invalidField");*/
                 validanDatumRodjenjaVlasnika = false;
                 return "";
             }
@@ -74,8 +91,6 @@ public class VlasnikController {
                         return LocalDate.parse(string, DateTimeFormatter.ofPattern("M/d/yyyy"));
                     } catch (DateTimeParseException dtpe) { }
                 }
-                /*datumField.getStyleClass().removeAll("validField");
-                datumField.getStyleClass().add("invalidField");*/
                 validanDatumRodjenjaVlasnika = false;
                 return null;
             }
@@ -94,8 +109,27 @@ public class VlasnikController {
         validacijaAdresePrebivalista(adresaField.getText());
         validacijaJmbg(jmbgField.getText());
         validacijaDatumaRodjenja(datumField.getValue());
+        validacijaMjestaRodjenja(mjestoRodjenja);
+        validacijaMjestaPrebivalista(adresaMjesto);
         new Thread(() -> validacijaPostanskogBroja(postanskiBrojField.getText())).start();
         if (validnaForma()) {
+            Mjesto mjestoPrebivalista = new Mjesto
+                    (0, adresaMjesto.getValue().toString(), postanskiBrojField.getText());
+            Mjesto mjestoRodjenjaVlasnika = new Mjesto
+                    (0, mjestoRodjenja.getValue().toString(), "");
+            if (vlasnik == null) {
+                vozilaDAO.dodajVlasnika(new Vlasnik(0, imeField.getText(), prezimeField.getText(),
+                        imeRoditeljaField.getText(), datumField.getValue(), mjestoRodjenja.getValue().toString(),
+                        adresaMjesto.getValue().toString(), jmbgField.getText());
+            }
+            else {
+                vlasnik.setVlasnik((Vlasnik) vlasnikCombo.getValue());
+                vlasnik.setModel(modelField.getText());
+                vlasnik.setBrojSasije(brojSasijeField.getText());
+                vlasnik.setBrojTablica(brojTablicaField.getText());
+                vlasnik.setProizvodjac(proizvodjac);
+                vozilaDAO.promijeniVlasnika(vlasnik);
+            }
             Stage stage = (Stage) okButton.getScene().getWindow();
             stage.close();
         }
@@ -153,8 +187,13 @@ public class VlasnikController {
         return true;
     }
 
-    private boolean validnoMjestoRodjenja() {
+    private boolean validnoMjestoRodjenja(ComboBox mjestoRodjenja) {
+        if (mjestoRodjenja.getEditor().getText().trim().isEmpty()) return false;
+        return true;
+    }
 
+    private boolean validnoMjestoPrebivalista(ComboBox mjestoPrebivalista) {
+        if (mjestoPrebivalista.getEditor().getText().trim().isEmpty()) return false;
         return true;
     }
 
@@ -231,6 +270,23 @@ public class VlasnikController {
     }
 
     private void validacijaPostanskogBroja(String n) {
+        if (validnoMjestoPrebivalistaVlasnika) {
+            boolean unijetoNovoMjesto = true;
+            for (int i = 0; i < adresaMjesto.getItems().size(); i++) {
+                if (adresaMjesto.getItems().get(i).toString().equals(adresaMjesto.getValue())) {
+                    unijetoNovoMjesto = false;
+                    break;
+                }
+            }
+            if (unijetoNovoMjesto && postanskiBrojField.getText().trim().isEmpty()) {
+                Platform.runLater(() -> {
+                    postanskiBrojField.getStyleClass().removeAll("validField");
+                    postanskiBrojField.getStyleClass().add("invalidField");
+                    validanPostanskiBrojVlasnika = false;
+                });
+                return;
+            }
+        }
         try {
             BufferedReader ulaz = new BufferedReader
                     (new InputStreamReader(new URL("http://c9.etf.unsa.ba/proba/postanskiBroj.php?postanskiBroj="
@@ -255,6 +311,30 @@ public class VlasnikController {
             }
         } catch(Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void validacijaMjestaRodjenja(ComboBox mjestoRodjenja) {
+        if (validnoMjestoRodjenja(mjestoRodjenja)) {
+            mjestoRodjenja.getStyleClass().removeAll("invalidField");
+            mjestoRodjenja.getStyleClass().add("validField");
+            validnoMjestoRodjenjaVlasnika = true;
+        } else {
+            mjestoRodjenja.getStyleClass().removeAll("validField");
+            mjestoRodjenja.getStyleClass().add("invalidField");
+            validnoMjestoRodjenjaVlasnika = false;
+        }
+    }
+
+    private void validacijaMjestaPrebivalista(ComboBox mjestoPrebivalista) {
+        if (validnoMjestoPrebivalista(mjestoPrebivalista)) {
+            mjestoPrebivalista.getStyleClass().removeAll("invalidField");
+            mjestoPrebivalista.getStyleClass().add("validField");
+            validnoMjestoPrebivalistaVlasnika = true;
+        } else {
+            mjestoPrebivalista.getStyleClass().removeAll("validField");
+            mjestoPrebivalista.getStyleClass().add("invalidField");
+            validnoMjestoPrebivalistaVlasnika = false;
         }
     }
 

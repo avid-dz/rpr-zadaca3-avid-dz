@@ -18,6 +18,7 @@ public class VozilaDAOBaza implements VozilaDAO {
     private PreparedStatement psDajMjesta;
     private PreparedStatement psDajProizvodjace;
     private PreparedStatement psNadjiMjesto;
+    private PreparedStatement psNadjiMjestoPoNazivu;
     private PreparedStatement psNadjiVozilo;
     private PreparedStatement psNadjiVlasnika;
     private PreparedStatement psNadjiProizvodjaca;
@@ -59,6 +60,8 @@ public class VozilaDAOBaza implements VozilaDAO {
                     ("SELECT * FROM proizvodjac ORDER BY naziv");
             psNadjiMjesto = connection.prepareStatement
                     ("SELECT * FROM mjesto WHERE id=?");
+            psNadjiMjestoPoNazivu = connection.prepareStatement
+                    ("SELECT * FROM mjesto WHERE naziv=?");
             psNadjiVlasnika = connection.prepareStatement
                     ("SELECT * FROM vlasnik WHERE id=?");
             psNadjiVozilo = connection.prepareStatement
@@ -213,7 +216,7 @@ public class VozilaDAOBaza implements VozilaDAO {
         maxNedozvoljeniIdVlasnika++;
         vlasnik.setId(maxNedozvoljeniIdVlasnika);
         try {
-            if (nadjiMjestoPoIdju(vlasnik.getMjestoRodjenja().getId()) == null) {
+            if (nadjiMjestoPoNazivu(vlasnik.getMjestoRodjenja().getNaziv()) == null) {
                 maxNedozvoljeniIdMjesta++;
                 vlasnik.getMjestoRodjenja().setId(maxNedozvoljeniIdMjesta);
                 psDodajMjesto.setInt(1, vlasnik.getMjestoRodjenja().getId());
@@ -221,13 +224,22 @@ public class VozilaDAOBaza implements VozilaDAO {
                 psDodajMjesto.setString(3, vlasnik.getMjestoRodjenja().getPostanskiBroj());
                 psDodajMjesto.executeUpdate();
             }
-            if (nadjiMjestoPoIdju(vlasnik.getMjestoPrebivalista().getId()) == null) {
+            else {
+                vlasnik.getMjestoRodjenja().setId(nadjiMjestoPoNazivu(vlasnik.getMjestoRodjenja().getNaziv()).getId());
+                vlasnik.getMjestoRodjenja().setPostanskiBroj
+                        (nadjiMjestoPoNazivu(vlasnik.getMjestoRodjenja().getNaziv()).getPostanskiBroj());
+            }
+            if (nadjiMjestoPoNazivu(vlasnik.getMjestoPrebivalista().getNaziv()) == null) {
                 maxNedozvoljeniIdMjesta++;
                 vlasnik.getMjestoPrebivalista().setId(maxNedozvoljeniIdMjesta);
                 psDodajMjesto.setInt(1, vlasnik.getMjestoPrebivalista().getId());
                 psDodajMjesto.setString(2, vlasnik.getMjestoPrebivalista().getNaziv());
                 psDodajMjesto.setString(3, vlasnik.getMjestoPrebivalista().getPostanskiBroj());
                 psDodajMjesto.executeUpdate();
+            }
+            else {
+                vlasnik.getMjestoPrebivalista().setId
+                        (nadjiMjestoPoNazivu(vlasnik.getMjestoPrebivalista().getNaziv()).getId());
             }
             psDodajVlasnika.setInt(1, vlasnik.getId());
             psDodajVlasnika.setString(2, vlasnik.getIme());
@@ -316,6 +328,9 @@ public class VozilaDAOBaza implements VozilaDAO {
                 psDodajProizvodjaca.setString(2, vozilo.getProizvodjac().getNaziv());
                 psDodajProizvodjaca.executeUpdate();
             }
+            else {
+                vozilo.getProizvodjac().setId(nadjiProizvodjacaPoNazivu(vozilo.getProizvodjac().getNaziv()).getId());
+            }
             psDodajVozilo.setInt(1, vozilo.getId());
             psDodajVozilo.setInt(2, vozilo.getProizvodjac().getId());
             psDodajVozilo.setString(3, vozilo.getModel());
@@ -383,6 +398,22 @@ public class VozilaDAOBaza implements VozilaDAO {
             ResultSet rezultat1 = psNadjiMjesto.executeQuery();
             if (!rezultat1.next()) return null;
             naziv = rezultat1.getString(2);
+            postanskiBroj = rezultat1.getString(3);
+            rezultat1.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new Mjesto(id, naziv, postanskiBroj);
+    }
+
+    private Mjesto nadjiMjestoPoNazivu(String naziv) {
+        int id = 0;
+        String postanskiBroj = "";
+        try {
+            psNadjiMjestoPoNazivu.setString(1, naziv);
+            ResultSet rezultat1 = psNadjiMjestoPoNazivu.executeQuery();
+            if (!rezultat1.next()) return null;
+            id = rezultat1.getInt(1);
             postanskiBroj = rezultat1.getString(3);
             rezultat1.close();
         } catch (SQLException e) {

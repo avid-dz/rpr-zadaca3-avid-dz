@@ -1,5 +1,6 @@
 package ba.unsa.etf.rpr.zadaca3;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,6 +22,7 @@ public class Controller {
     public TableView tabelaVozilo;
     public RadioMenuItem menuDb;
     public RadioMenuItem menuXml;
+    public TabPane tabPane;
 
     public Controller() {
         vozilaDAO = new VozilaDAOBaza();
@@ -149,5 +151,8 @@ public class Controller {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
+        noviStage.setOnHiding(event -> {
+            Platform.runLater(() -> tabelaVozilo.setItems(vozilaDAO.getVozila()));
+        });
     }
 }
