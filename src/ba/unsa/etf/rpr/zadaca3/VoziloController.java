@@ -1,13 +1,16 @@
 package ba.unsa.etf.rpr.zadaca3;
 
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
+import java.util.Set;
+import java.util.TreeSet;
 
 public class VoziloController {
 
@@ -32,8 +35,12 @@ public class VoziloController {
 
     @FXML
     public void initialize() {
-        vlasnikCombo.setItems(vozilaDAO.getVlasnici());
-        FXCollections.sort(vlasnikCombo.getItems());
+        ObservableList<Vlasnik> listaVlasnika = vozilaDAO.getVlasnici();
+        Set<Vlasnik> skupZaSortiranje = new TreeSet<>();
+        skupZaSortiranje.addAll(listaVlasnika);
+        listaVlasnika.clear();
+        listaVlasnika.addAll(skupZaSortiranje);
+        vlasnikCombo.setItems(listaVlasnika);
         proizvodjacCombo.setItems(vozilaDAO.getProizvodjaci());
     }
 

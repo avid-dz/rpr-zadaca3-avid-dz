@@ -1,6 +1,13 @@
 package ba.unsa.etf.rpr.zadaca3;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
+import java.beans.XMLDecoder;
+import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class VozilaDAOXML implements VozilaDAO {
 
@@ -9,15 +16,49 @@ public class VozilaDAOXML implements VozilaDAO {
     }
 
     public ObservableList<Vlasnik> getVlasnici() {
-        return null;
+        return FXCollections.observableArrayList();
     }
 
     public ObservableList<Mjesto> getMjesta() {
-        return null;
+        ArrayList<Mjesto> mjestoArrayList = null;
+        try {
+            XMLDecoder ulaz = new XMLDecoder(new FileInputStream("mjesta.xml"));
+            mjestoArrayList = (ArrayList<Mjesto>) ulaz.readObject();
+            ulaz.close();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        Set<Mjesto> skupZaSortiranje = new TreeSet<>();
+        skupZaSortiranje.addAll(mjestoArrayList);
+        mjestoArrayList.clear();
+        mjestoArrayList.addAll(skupZaSortiranje);
+        ObservableList<Mjesto> mjesta = FXCollections.observableArrayList(mjestoArrayList);
+        return mjesta;
     }
 
     public ObservableList<Vozilo> getVozila() {
-        return null;
+        ArrayList<Vozilo> voziloArrayList = null;
+        try {
+            XMLDecoder ulaz = new XMLDecoder(new FileInputStream("vozila.xml"));
+            voziloArrayList = (ArrayList<Vozilo>) ulaz.readObject();
+            ulaz.close();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        Set<Vozilo> skupZaSortiranje = new TreeSet<>();
+        skupZaSortiranje.addAll(voziloArrayList);
+        voziloArrayList.clear();
+        voziloArrayList.addAll(skupZaSortiranje);
+        ObservableList<Vozilo> vozila = FXCollections.observableArrayList(voziloArrayList);
+        for (Vozilo v : vozila) {
+            for (Vlasnik vl : getVlasnici()) {
+                if (vl.getId() == v.getVlasnik().getId()) {
+                    v.getVlasnik().setDatumRodjenja(vl.getDatumRodjenja());
+                    break;
+                }
+            }
+        }
+        return vozila;
     }
 
     public void dodajVlasnika(Vlasnik testTestovic) {
@@ -25,7 +66,20 @@ public class VozilaDAOXML implements VozilaDAO {
     }
 
     public ObservableList<Proizvodjac> getProizvodjaci() {
-        return null;
+        ArrayList<Proizvodjac> proizvodjacArrayList = null;
+        try {
+            XMLDecoder ulaz = new XMLDecoder(new FileInputStream("proizvodjaci.xml"));
+            proizvodjacArrayList = (ArrayList<Proizvodjac>) ulaz.readObject();
+            ulaz.close();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        Set<Proizvodjac> skupZaSortiranje = new TreeSet<>();
+        skupZaSortiranje.addAll(proizvodjacArrayList);
+        proizvodjacArrayList.clear();
+        proizvodjacArrayList.addAll(skupZaSortiranje);
+        ObservableList<Proizvodjac> proizvodjaci= FXCollections.observableArrayList(proizvodjacArrayList);
+        return proizvodjaci;
     }
 
     public void promijeniVlasnika(Vlasnik vlasnik) {

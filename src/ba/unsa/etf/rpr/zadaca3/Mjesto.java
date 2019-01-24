@@ -1,10 +1,18 @@
 package ba.unsa.etf.rpr.zadaca3;
 
-public class Mjesto {
+import java.io.Serializable;
+
+public class Mjesto implements Comparable<Mjesto>, Serializable {
 
     private int id;
     private String naziv;
     private String postanskiBroj;
+
+    public Mjesto() {
+        id = 0;
+        naziv = "";
+        postanskiBroj = "";
+    }
 
     public Mjesto(int id, String naziv, String postanskiBroj) {
         this.id = id;
@@ -37,5 +45,10 @@ public class Mjesto {
     @Override
     public String toString() {
         return naziv;
+    }
+
+    @Override
+    public int compareTo(Mjesto o) {
+        return getNaziv().compareTo(o.getNaziv());
     }
 }

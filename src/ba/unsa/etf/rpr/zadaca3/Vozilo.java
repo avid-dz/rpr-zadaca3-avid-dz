@@ -1,6 +1,8 @@
 package ba.unsa.etf.rpr.zadaca3;
 
-public class Vozilo {
+import java.io.Serializable;
+
+public class Vozilo implements Comparable<Vozilo>, Serializable {
 
     private int id;
     private Proizvodjac proizvodjac;
@@ -8,6 +10,15 @@ public class Vozilo {
     private String brojSasije;
     private String brojTablica;
     private Vlasnik vlasnik;
+
+    public Vozilo() {
+        id = 0;
+        proizvodjac = null;
+        model = "";
+        brojSasije = "";
+        brojTablica = "";
+        vlasnik = null;
+    }
 
     public Vozilo(int id, Proizvodjac proizvodjac, String model, String brojSasije, String brojTablica, Vlasnik vlasnik) {
         this.id = id;
@@ -66,5 +77,10 @@ public class Vozilo {
 
     public String getNazivProizvodjaca() {
         return proizvodjac.getNaziv();
+    }
+
+    @Override
+    public int compareTo(Vozilo o) {
+        return Integer.valueOf(getId()).compareTo(o.getId());
     }
 }

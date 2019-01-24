@@ -1,8 +1,9 @@
 package ba.unsa.etf.rpr.zadaca3;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Vlasnik implements Comparable<Vlasnik> {
+public class Vlasnik implements Comparable<Vlasnik>, Serializable {
 
     private int id;
     private String ime;
@@ -13,6 +14,18 @@ public class Vlasnik implements Comparable<Vlasnik> {
     private String adresaPrebivalista;
     private Mjesto mjestoPrebivalista;
     private String jmbg;
+
+    public Vlasnik() {
+        id = 0;
+        ime = "";
+        prezime = "";
+        imeRoditelja = "";
+        datumRodjenja = LocalDate.now();
+        mjestoRodjenja = null;
+        adresaPrebivalista = "";
+        mjestoPrebivalista = null;
+        jmbg = "";
+    }
 
     public Vlasnik(int id, String ime, String prezime, String imeRoditelja, LocalDate datumRodjenja,
                    Mjesto mjestoRodjenja, String adresaPrebivalista, Mjesto mjestoPrebivalista, String jmbg) {
@@ -101,6 +114,14 @@ public class Vlasnik implements Comparable<Vlasnik> {
 
     public String getImeIPrezime() {
         return ime + " " + prezime;
+    }
+
+    public void setDatumRodjenjaDani(long datumRodjenjaDani) {
+
+    }
+
+    public long getDatumRodjenjaDani() {
+        return 0;
     }
 
     @Override
