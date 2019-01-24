@@ -58,7 +58,7 @@
                               <HBox.margin>
                                  <Insets left="2.0" right="2.0" />
                               </HBox.margin></Button>
-                              <Button fx:id="tbEditVlasnik" mnemonicParsing="false" styleClass="tbButton, tbEdit">
+                              <Button fx:id="tbEditVlasnik" onAction="#editVlasnikEventHandler" mnemonicParsing="false" styleClass="tbButton, tbEdit">
                               <padding>
                                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                               </padding>
@@ -130,7 +130,7 @@
                               <HBox.margin>
                                  <Insets left="2.0" right="2.0" />
                               </HBox.margin></Button>
-                              <Button fx:id="tbEditVozilo" mnemonicParsing="false" styleClass="tbButton, tbEdit">
+                              <Button fx:id="tbEditVozilo" onAction="#editVoziloEventHandler" mnemonicParsing="false" styleClass="tbButton, tbEdit">
                                   <padding>
                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                   </padding>

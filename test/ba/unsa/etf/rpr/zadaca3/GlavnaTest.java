@@ -133,6 +133,7 @@ class GlavnaTest {
         robot.write("f");
         robot.clickOn("#datumField");
         robot.write("1/8/2003");
+        robot.press(KeyCode.ENTER).release(KeyCode.ENTER);
         robot.clickOn("#jmbgField");
         robot.write("0801003500007");
 
@@ -230,6 +231,7 @@ class GlavnaTest {
         robot.write("f");
         robot.clickOn("#datumField");
         robot.write("1/8/2003");
+        robot.press(KeyCode.ENTER).release(KeyCode.ENTER);
         robot.clickOn("#jmbgField");
         robot.write("0801003500007");
 

@@ -143,6 +143,7 @@ class VlasnikControllerTest {
     public void testDatumValidacija (FxRobot robot) {
         robot.clickOn("#datumField");
         robot.write("1/1/2020");
+        robot.press(KeyCode.ENTER).release(KeyCode.ENTER);
 
         robot.clickOn("#okButton");
 
@@ -157,6 +158,7 @@ class VlasnikControllerTest {
         robot.clickOn("#datumField");
         robot.press(KeyCode.CONTROL).press(KeyCode.A).release(KeyCode.A).release(KeyCode.CONTROL);
         robot.write("1/1/2018");
+        robot.press(KeyCode.ENTER).release(KeyCode.ENTER);
 
         robot.clickOn("#okButton");
 

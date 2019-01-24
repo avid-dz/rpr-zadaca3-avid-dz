@@ -22,7 +22,6 @@ public class Controller {
     public TableView tabelaVozilo;
     public RadioMenuItem menuDb;
     public RadioMenuItem menuXml;
-    public TabPane tabPane;
 
     public Controller() {
         vozilaDAO = new VozilaDAOBaza();
@@ -156,6 +155,52 @@ public class Controller {
         }
         noviStage.setOnHiding(event -> {
             Platform.runLater(() -> tabelaVozilo.setItems(vozilaDAO.getVozila()));
+        });
+    }
+
+    public void editVoziloEventHandler(ActionEvent actionEvent) {
+        if (trenutnoOdabranoVozilo == null) return;
+        Stage noviStage = null;
+        FXMLLoader loader = null;
+        VoziloController voziloController = null;
+        try {
+            loader = new FXMLLoader(getClass().getResource("/fxml/vozilo.fxml"));
+            voziloController = new VoziloController(vozilaDAO, trenutnoOdabranoVozilo);
+            loader.setController(voziloController);
+            Parent root = loader.load();
+            noviStage = new Stage();
+            noviStage.setResizable(false);
+            noviStage.setTitle("Promjena vozila");
+            noviStage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+            noviStage.show();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        noviStage.setOnHiding(event -> {
+            Platform.runLater(() -> tabelaVozilo.setItems(vozilaDAO.getVozila()));
+        });
+    }
+
+    public void editVlasnikEventHandler(ActionEvent actionEvent) {
+        if (trenutnoOdabraniVlasnik == null) return;
+        Stage noviStage = null;
+        FXMLLoader loader = null;
+        VlasnikController vlasnikController = null;
+        try {
+            loader = new FXMLLoader(getClass().getResource("/fxml/vlasnik.fxml"));
+            vlasnikController = new VlasnikController(vozilaDAO, trenutnoOdabraniVlasnik);
+            loader.setController(vlasnikController);
+            Parent root = loader.load();
+            noviStage = new Stage();
+            noviStage.setResizable(false);
+            noviStage.setTitle("Promjena vlasnika");
+            noviStage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+            noviStage.show();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        noviStage.setOnHiding(event -> {
+            Platform.runLater(() -> tabelaVlasnici.setItems(vozilaDAO.getVlasnici()));
         });
     }
 }
