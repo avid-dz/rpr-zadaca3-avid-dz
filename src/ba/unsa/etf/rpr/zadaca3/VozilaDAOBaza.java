@@ -347,6 +347,10 @@ public class VozilaDAOBaza implements VozilaDAO {
     public void promijeniVozilo(Vozilo vozilo) {
         if (vozilo == null) return;
         init();
+        if (nadjiVlasnikaPoIdju(vozilo.getVlasnik().getId()) == null) {
+            close();
+            throw new IllegalArgumentException("Ne postoji vlasnik!");
+        }
         try {
             if (nadjiProizvodjacaPoNazivu(vozilo.getProizvodjac().getNaziv()) == null) {
                 maxNedozvoljeniIdProizvodjaca++;

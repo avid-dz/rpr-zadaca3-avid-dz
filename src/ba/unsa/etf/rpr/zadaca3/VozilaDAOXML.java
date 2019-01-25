@@ -285,7 +285,73 @@ public class VozilaDAOXML implements VozilaDAO {
 
     public void promijeniVozilo(Vozilo vozilo) {
         if (vozilo == null) return;
-
+        boolean pronadjenoVozilo = false;
+        int indeks = 0;
+        ObservableList<Vozilo> vozila = getVozila();
+        for (int i = 0; i < vozila.size(); i++) {
+            if (vozila.get(i).getId() == vozilo.getId()) {
+                indeks = i;
+                pronadjenoVozilo = true;
+                break;
+            }
+        }
+        if (!pronadjenoVozilo) return;
+        ObservableList<Vlasnik> vlasnici = getVlasnici();
+        boolean pronadjenVlasnik = false;
+        for (int i = 0; i < vlasnici.size(); i++) {
+            if (vlasnici.get(i).getId() == vozilo.getVlasnik().getId()) {
+                pronadjenVlasnik = true;
+                break;
+            }
+        }
+        if (!pronadjenVlasnik) throw new IllegalArgumentException("Vlasnik ne postoji!");
+        ObservableList<Proizvodjac> proizvodjaci = getProizvodjaci();
+        int indeksProizvodjaca = 0;
+        boolean pronadjenProizvodjac = false;
+        for (int i = 0; i < proizvodjaci.size(); i++) {
+            if (proizvodjaci.get(i).getNaziv().equals(vozilo.getProizvodjac().getNaziv())) {
+                indeksProizvodjaca = i;
+                pronadjenProizvodjac = true;
+                break;
+            }
+        }
+        int maxNedozvoljeniIdProizvodjaca = 0;
+        if (!pronadjenProizvodjac && proizvodjaci.size() != 0) {
+            maxNedozvoljeniIdProizvodjaca = proizvodjaci.get(0).getId();
+            for (int i = 1; i < proizvodjaci.size(); i++) {
+                if (proizvodjaci.get(i).getId() > maxNedozvoljeniIdProizvodjaca) {
+                    maxNedozvoljeniIdProizvodjaca = proizvodjaci.get(i).getId();
+                }
+            }
+        }
+        if (!pronadjenProizvodjac) {
+            vozilo.getProizvodjac().setId(maxNedozvoljeniIdProizvodjaca + 1);
+            proizvodjaci.add(vozilo.getProizvodjac());
+            ArrayList<Proizvodjac> proizvodjacArrayList = new ArrayList<>();
+            proizvodjacArrayList.addAll(proizvodjaci);
+            try {
+                izlaz = new XMLEncoder(new FileOutputStream("proizvodjaci.xml"));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            izlaz.writeObject(proizvodjacArrayList);
+            close();
+        }
+        else vozilo.getProizvodjac().setId(proizvodjaci.get(indeksProizvodjaca).getId());
+        vozila.get(indeks).setProizvodjac(vozilo.getProizvodjac());
+        vozila.get(indeks).setBrojTablica(vozilo.getBrojTablica());
+        vozila.get(indeks).setBrojSasije(vozilo.getBrojSasije());
+        vozila.get(indeks).setModel(vozilo.getModel());
+        vozila.get(indeks).setVlasnik(vozilo.getVlasnik());
+        ArrayList<Vozilo> voziloArrayList = new ArrayList<>();
+        voziloArrayList.addAll(vozila);
+        try {
+            izlaz = new XMLEncoder(new FileOutputStream("vozila.xml"));
+            izlaz.writeObject(voziloArrayList);
+            close();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void obrisiVozilo(Vozilo vozilo) {
