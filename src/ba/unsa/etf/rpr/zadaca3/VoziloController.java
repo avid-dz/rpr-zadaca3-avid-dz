@@ -80,7 +80,7 @@ public class VoziloController {
                 vozilo.setProizvodjac(proizvodjac);
                 vozilaDAO.promijeniVozilo(vozilo);
             }
-            Stage stage = (Stage) okButton.getScene().getWindow();
+            Stage stage = (Stage) okButton.getScene().getWindow(); // zatvaranje forme u slucaju da je validno i dodano
             Platform.runLater(() -> stage.close());
         }
     }

@@ -372,12 +372,12 @@ class GlavnaTest {
         assertEquals("M23-K-456", vozila.get(1).getBrojTablica());
         assertEquals("Mehic", vozila.get(1).getVlasnik().getPrezime());
 
-        robot.clickOn("#tabelaVozilo");
-
+        robot.clickOn("#tabelaVozilo"); // u profesorovim testovima stoji "tabelaVozila" medjutim u postavci pise
+                                               // "tabelaVozilo"!
         // Selektujemo Škodu
         robot.press(KeyCode.DOWN).release(KeyCode.DOWN);
         robot.press(KeyCode.DOWN).release(KeyCode.DOWN);
-        robot.clickOn("#tabelaVozilo");
+        robot.clickOn("#tabelaVozilo"); // analogan gornjem komentaru za tabelaVozilo
 
         robot.clickOn("#tbRemoveVozilo");
 

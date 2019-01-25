@@ -122,7 +122,7 @@ public class Vlasnik implements Comparable<Vlasnik>, Serializable {
         return ime + " " + prezime;
     }
 
-    public void setDatumRodjenjaDani(long datumRodjenjaDani) {
+    public void setDatumRodjenjaDani(long datumRodjenjaDani) { // atribut potreban zbog serijalizacije datuma
         this.datumRodjenjaDani = datumRodjenjaDani;
         datumRodjenja = Instant.ofEpochSecond(datumRodjenjaDani * 86400).atZone(ZoneId.systemDefault()).toLocalDate();
     }
@@ -134,8 +134,7 @@ public class Vlasnik implements Comparable<Vlasnik>, Serializable {
     @Override
     public String toString() {
         return prezime + " " + ime;
-    }
-
+    } // zbog prikaza u comboboxu i sortiranja po ovom stringu
 
     @Override
     public int compareTo(Vlasnik o) {

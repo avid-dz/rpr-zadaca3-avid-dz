@@ -68,8 +68,8 @@ public class VlasnikController {
             postanskiBrojField.setText(vlasnik.getMjestoPrebivalista().getPostanskiBroj());
         }
 
-        adresaMjesto.valueProperty().addListener((old, o, n) -> {
-            boolean unijetoNovoMjesto = true;
+        adresaMjesto.valueProperty().addListener((old, o, n) -> { // cim se unese postojece mjesto prebivalista,
+            boolean unijetoNovoMjesto = true;                     // treba prikazati njegov postanski broj
             int indeks = 0;
             for (int i = 0; i < adresaMjesto.getItems().size(); i++) {
                 if (adresaMjesto.getItems().get(i).toString().equals(adresaMjesto.getValue())) {
@@ -125,7 +125,7 @@ public class VlasnikController {
         validacijaMjestaPrebivalista(adresaMjesto);
         new Thread(() -> validacijaPostanskogBroja(postanskiBrojField.getText())).start();
         try {
-            Thread.sleep(4500);
+            Thread.sleep(4500); // vrijeme dato validatoru postanskog broja
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -151,8 +151,8 @@ public class VlasnikController {
                     vlasnik.setJmbg(jmbgField.getText());
                     vozilaDAO.promijeniVlasnika(vlasnik);
                 }
-                Stage stage = (Stage) okButton.getScene().getWindow();
-                Platform.runLater(() -> stage.close());
+                Stage stage = (Stage) okButton.getScene().getWindow(); // zatvaranje forme u slucaju da je validno
+                Platform.runLater(() -> stage.close());                // i dodano
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {

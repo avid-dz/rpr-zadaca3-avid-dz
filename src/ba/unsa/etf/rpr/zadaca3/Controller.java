@@ -48,7 +48,7 @@ public class Controller {
 
     public void menuDbEventHandler(ActionEvent actionEvent) {
         menuDb.setSelected(true);
-        menuXml.setSelected(false);
+        menuXml.setSelected(false); // radioitemi se medjusobno deselektuju
         vozilaDAO = new VozilaDAOBaza();
         tabelaVlasnici.getSelectionModel().clearSelection();
         tabelaVozilo.getSelectionModel().clearSelection();
@@ -120,7 +120,7 @@ public class Controller {
         VlasnikController vlasnikController = null;
         try {
             loader = new FXMLLoader(getClass().getResource("/fxml/vlasnik.fxml"));
-            vlasnikController = new VlasnikController(vozilaDAO, null);
+            vlasnikController = new VlasnikController(vozilaDAO, null); // vlasnik je null jer dodajemo novog
             loader.setController(vlasnikController);
             Parent root = loader.load();
             noviStage = new Stage();
@@ -142,7 +142,7 @@ public class Controller {
         VoziloController voziloController = null;
         try {
             loader = new FXMLLoader(getClass().getResource("/fxml/vozilo.fxml"));
-            voziloController = new VoziloController(vozilaDAO, null);
+            voziloController = new VoziloController(vozilaDAO, null); // vozilo je null jer dodajemo novo
             loader.setController(voziloController);
             Parent root = loader.load();
             noviStage = new Stage();
@@ -165,8 +165,8 @@ public class Controller {
         VoziloController voziloController = null;
         try {
             loader = new FXMLLoader(getClass().getResource("/fxml/vozilo.fxml"));
-            voziloController = new VoziloController(vozilaDAO, trenutnoOdabranoVozilo);
-            loader.setController(voziloController);
+            voziloController = new VoziloController(vozilaDAO, trenutnoOdabranoVozilo); // trenutno odabrano vozilo
+            loader.setController(voziloController);                                     // je ono koje se mijenja
             Parent root = loader.load();
             noviStage = new Stage();
             noviStage.setResizable(false);
@@ -188,8 +188,8 @@ public class Controller {
         VlasnikController vlasnikController = null;
         try {
             loader = new FXMLLoader(getClass().getResource("/fxml/vlasnik.fxml"));
-            vlasnikController = new VlasnikController(vozilaDAO, trenutnoOdabraniVlasnik);
-            loader.setController(vlasnikController);
+            vlasnikController = new VlasnikController(vozilaDAO, trenutnoOdabraniVlasnik); // trenutno odabrani vlasnik
+            loader.setController(vlasnikController);                                       // je onaj koji se mijenja
             Parent root = loader.load();
             noviStage = new Stage();
             noviStage.setResizable(false);
