@@ -179,11 +179,41 @@ public class VozilaDAOXML implements VozilaDAO {
     }
 
     public void promijeniVlasnika(Vlasnik vlasnik) {
+        if (vlasnik == null) return;
 
     }
 
     public void obrisiVlasnika(Vlasnik vlasnik) {
-
+        if (vlasnik == null) return;
+        ObservableList<Vozilo> vozila = getVozila();
+        boolean posjedujeBarJednoVozilo = false;
+        for (Vozilo v : vozila) {
+            if (v.getVlasnik().getId() == vlasnik.getId()) {
+                posjedujeBarJednoVozilo = true;
+                break;
+            }
+        }
+        if (posjedujeBarJednoVozilo) throw new IllegalArgumentException("Vlasnik posjeduje bar jedno vozilo!");
+        ObservableList<Vlasnik> vlasnici = getVlasnici();
+        boolean obrisanBarJedan = false;
+        for (int i = 0; i < vlasnici.size(); i++) {
+            if (vlasnici.get(i).getId() == vlasnik.getId()) {
+                vlasnici.remove(i);
+                obrisanBarJedan = true;
+                break;
+            }
+        }
+        if (obrisanBarJedan) {
+            ArrayList<Vlasnik> vlasnikArrayList = new ArrayList<>();
+            vlasnikArrayList.addAll(vlasnici);
+            try {
+                izlaz = new XMLEncoder(new FileOutputStream("vlasnici.xml"));
+                izlaz.writeObject(vlasnikArrayList);
+                close();
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void dodajVozilo(Vozilo vozilo) {
@@ -255,11 +285,32 @@ public class VozilaDAOXML implements VozilaDAO {
     }
 
     public void promijeniVozilo(Vozilo vozilo) {
+        if (vozilo == null) return;
 
     }
 
     public void obrisiVozilo(Vozilo vozilo) {
-
+        if (vozilo == null) return;
+        ObservableList<Vozilo> vozila = getVozila();
+        boolean obrisanBarJedan = false;
+        for (int i = 0; i < vozila.size(); i++) {
+            if (vozila.get(i).getId() == vozilo.getId()) {
+                vozila.remove(i);
+                obrisanBarJedan = true;
+                break;
+            }
+        }
+        if (obrisanBarJedan) {
+            ArrayList<Vozilo> voziloArrayList = new ArrayList<>();
+            voziloArrayList.addAll(vozila);
+            try {
+                izlaz = new XMLEncoder(new FileOutputStream("vozila.xml"));
+                izlaz.writeObject(voziloArrayList);
+                close();
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void close() {
