@@ -240,6 +240,8 @@ public class VozilaDAOBaza implements VozilaDAO {
             else {
                 vlasnik.getMjestoPrebivalista().setId
                         (nadjiMjestoPoNazivu(vlasnik.getMjestoPrebivalista().getNaziv()).getId());
+                vlasnik.getMjestoPrebivalista().setPostanskiBroj
+                        (nadjiMjestoPoNazivu(vlasnik.getMjestoPrebivalista().getNaziv()).getPostanskiBroj());
             }
             psDodajVlasnika.setInt(1, vlasnik.getId());
             psDodajVlasnika.setString(2, vlasnik.getIme());
@@ -261,7 +263,7 @@ public class VozilaDAOBaza implements VozilaDAO {
         if (vlasnik == null) return;
         init();
         try {
-            if (nadjiMjestoPoIdju(vlasnik.getMjestoRodjenja().getId()) == null) {
+            if (nadjiMjestoPoNazivu(vlasnik.getMjestoRodjenja().getNaziv()) == null) {
                 maxNedozvoljeniIdMjesta++;
                 vlasnik.getMjestoRodjenja().setId(maxNedozvoljeniIdMjesta);
                 psDodajMjesto.setInt(1, vlasnik.getMjestoRodjenja().getId());
@@ -269,13 +271,24 @@ public class VozilaDAOBaza implements VozilaDAO {
                 psDodajMjesto.setString(3, vlasnik.getMjestoRodjenja().getPostanskiBroj());
                 psDodajMjesto.executeUpdate();
             }
-            if (nadjiMjestoPoIdju(vlasnik.getMjestoPrebivalista().getId()) == null) {
+            else {
+                vlasnik.getMjestoRodjenja().setId(nadjiMjestoPoNazivu(vlasnik.getMjestoRodjenja().getNaziv()).getId());
+                vlasnik.getMjestoRodjenja().setPostanskiBroj
+                        (nadjiMjestoPoNazivu(vlasnik.getMjestoRodjenja().getNaziv()).getPostanskiBroj());
+            }
+            if (nadjiMjestoPoNazivu(vlasnik.getMjestoPrebivalista().getNaziv()) == null) {
                 maxNedozvoljeniIdMjesta++;
                 vlasnik.getMjestoPrebivalista().setId(maxNedozvoljeniIdMjesta);
                 psDodajMjesto.setInt(1, vlasnik.getMjestoPrebivalista().getId());
                 psDodajMjesto.setString(2, vlasnik.getMjestoPrebivalista().getNaziv());
                 psDodajMjesto.setString(3, vlasnik.getMjestoPrebivalista().getPostanskiBroj());
                 psDodajMjesto.executeUpdate();
+            }
+            else {
+                vlasnik.getMjestoPrebivalista().setId
+                        (nadjiMjestoPoNazivu(vlasnik.getMjestoPrebivalista().getNaziv()).getId());
+                vlasnik.getMjestoPrebivalista().setPostanskiBroj
+                        (nadjiMjestoPoNazivu(vlasnik.getMjestoPrebivalista().getNaziv()).getPostanskiBroj());
             }
             psIzmijeniVlasnika.setString(1, vlasnik.getIme());
             psIzmijeniVlasnika.setString(2, vlasnik.getPrezime());
