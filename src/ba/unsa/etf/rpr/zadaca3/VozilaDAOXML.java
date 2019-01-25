@@ -179,7 +179,84 @@ public class VozilaDAOXML implements VozilaDAO {
 
     public void promijeniVlasnika(Vlasnik vlasnik) {
         if (vlasnik == null) return;
-
+        ObservableList<Vlasnik> vlasnici = getVlasnici();
+        boolean pronadjenVlasnik = false;
+        int indeks = 0;
+        for (int i = 0; i < vlasnici.size(); i++) {
+            if (vlasnici.get(i).getId() == vlasnik.getId()) {
+                indeks = i;
+                pronadjenVlasnik = true;
+                break;
+            }
+        }
+        if (!pronadjenVlasnik) return;
+        boolean pronadjenoMjestoRodjenja = false;
+        int maxNedozvoljeniIdMjesta = 0;
+        int indeksMjestaRodjenja = 0;
+        int indeksMjestaPrebivalista = 0;
+        ObservableList<Mjesto> mjesta = getMjesta();
+        for (int i = 0; i < mjesta.size(); i++) {
+            if (mjesta.get(i).getNaziv().equals(vlasnik.getMjestoRodjenja().getNaziv())) {
+                indeksMjestaRodjenja = i;
+                pronadjenoMjestoRodjenja = true;
+                break;
+            }
+        }
+        boolean pronadjenoMjestoPrebivalista = false;
+        for (int i = 0; i < mjesta.size(); i++) {
+            if (mjesta.get(i).getNaziv().equals(vlasnik.getMjestoPrebivalista().getNaziv())) {
+                indeksMjestaPrebivalista = i;
+                pronadjenoMjestoPrebivalista = true;
+                break;
+            }
+        }
+        if ((!pronadjenoMjestoRodjenja || !pronadjenoMjestoPrebivalista) && mjesta.size() != 0) {
+            maxNedozvoljeniIdMjesta = mjesta.get(0).getId();
+            for (int i = 1; i < mjesta.size(); i++) {
+                if (mjesta.get(i).getId() > maxNedozvoljeniIdMjesta) {
+                    maxNedozvoljeniIdMjesta = mjesta.get(i).getId();
+                }
+            }
+        }
+        if (!pronadjenoMjestoRodjenja) {
+            maxNedozvoljeniIdMjesta++;
+            vlasnik.getMjestoRodjenja().setId(maxNedozvoljeniIdMjesta);
+            mjesta.add(vlasnik.getMjestoRodjenja());
+        }
+        else vlasnik.getMjestoRodjenja().setId(mjesta.get(indeksMjestaRodjenja).getId());
+        if (!pronadjenoMjestoPrebivalista) {
+            vlasnik.getMjestoPrebivalista().setId(maxNedozvoljeniIdMjesta + 1);
+            mjesta.add(vlasnik.getMjestoPrebivalista());
+        }
+        else vlasnik.getMjestoPrebivalista().setId(mjesta.get(indeksMjestaPrebivalista).getId());
+        if (!pronadjenoMjestoRodjenja || !pronadjenoMjestoPrebivalista) {
+            ArrayList<Mjesto> mjestoArrayList = new ArrayList<>();
+            mjestoArrayList.addAll(mjesta);
+            try {
+                izlaz = new XMLEncoder(new FileOutputStream("mjesta.xml"));
+                izlaz.writeObject(mjestoArrayList);
+                close();
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
+        vlasnici.get(indeks).setIme(vlasnik.getIme());
+        vlasnici.get(indeks).setPrezime(vlasnik.getPrezime());
+        vlasnici.get(indeks).setImeRoditelja(vlasnik.getImeRoditelja());
+        vlasnici.get(indeks).setAdresaPrebivalista(vlasnik.getAdresaPrebivalista());
+        vlasnici.get(indeks).setDatumRodjenja(vlasnik.getDatumRodjenja());
+        vlasnici.get(indeks).setMjestoRodjenja(vlasnik.getMjestoRodjenja());
+        vlasnici.get(indeks).setMjestoPrebivalista(vlasnik.getMjestoPrebivalista());
+        vlasnici.get(indeks).setJmbg(vlasnik.getJmbg());
+        ArrayList<Vlasnik> vlasnikArrayList = new ArrayList<>();
+        vlasnikArrayList.addAll(vlasnici);
+        try {
+            izlaz = new XMLEncoder(new FileOutputStream("vlasnici.xml"));
+            izlaz.writeObject(vlasnikArrayList);
+            close();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void obrisiVlasnika(Vlasnik vlasnik) {
