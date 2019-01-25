@@ -42,6 +42,13 @@ public class VoziloController {
         listaVlasnika.addAll(skupZaSortiranje);
         vlasnikCombo.setItems(listaVlasnika);
         proizvodjacCombo.setItems(vozilaDAO.getProizvodjaci());
+        if (vozilo != null) {
+            modelField.setText(vozilo.getModel());
+            brojSasijeField.setText(vozilo.getBrojSasije());
+            brojTablicaField.setText(vozilo.getBrojTablica());
+            vlasnikCombo.setValue(vozilo.getVlasnik());
+            proizvodjacCombo.setValue(vozilo.getProizvodjac());
+        }
     }
 
     public void cancelEventHandler(ActionEvent actionEvent) {

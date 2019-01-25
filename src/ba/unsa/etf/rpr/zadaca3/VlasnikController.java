@@ -56,6 +56,17 @@ public class VlasnikController {
     public void initialize() {
         mjestoRodjenja.setItems(vozilaDAO.getMjesta());
         adresaMjesto.setItems(vozilaDAO.getMjesta());
+        if (vlasnik != null) {
+            imeField.setText(vlasnik.getIme());
+            prezimeField.setText(vlasnik.getPrezime());
+            imeRoditeljaField.setText(vlasnik.getImeRoditelja());
+            adresaField.setText(vlasnik.getAdresaPrebivalista());
+            jmbgField.setText(vlasnik.getJmbg());
+            datumField.setValue(vlasnik.getDatumRodjenja());
+            mjestoRodjenja.setValue(vlasnik.getMjestoRodjenja());
+            adresaMjesto.setValue(vlasnik.getMjestoPrebivalista());
+            postanskiBrojField.setText(vlasnik.getMjestoPrebivalista().getPostanskiBroj());
+        }
 
         adresaMjesto.valueProperty().addListener((old, o, n) -> {
             boolean unijetoNovoMjesto = true;
