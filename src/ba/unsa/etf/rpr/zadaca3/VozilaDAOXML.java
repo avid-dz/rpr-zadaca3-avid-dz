@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Set;
@@ -114,6 +115,57 @@ public class VozilaDAOXML implements VozilaDAO {
             }
         }
         vlasnik.setId(maxNedozvoljeniIdVlasnika + 1);
+        boolean pronadjenoMjestoRodjenja = false;
+        int maxNedozvoljeniIdMjesta = 0;
+        int indeksMjestaRodjenja = 0;
+        for (int i = 0; i < vlasnici.size(); i++) {
+            if (vlasnici.get(i).getMjestoRodjenja().getNaziv().equals(vlasnik.getMjestoRodjenja().getNaziv())) {
+                indeksMjestaRodjenja = i;
+                pronadjenoMjestoRodjenja = true;
+                break;
+            }
+        }
+        if (!pronadjenoMjestoRodjenja && vlasnici.size() != 0) {
+            maxNedozvoljeniIdMjesta = vlasnici.get(0).getMjestoRodjenja().getId();
+            for (int i = 0; i < vlasnici.size(); i++) {
+                if (vlasnici.get(i).getMjestoRodjenja().getId() > maxNedozvoljeniIdMjesta) {
+                    maxNedozvoljeniIdMjesta = vlasnici.get(i).getMjestoRodjenja().getId();
+                }
+                if (vlasnici.get(i).getMjestoPrebivalista().getId() > maxNedozvoljeniIdMjesta) {
+                    maxNedozvoljeniIdMjesta = vlasnici.get(i).getMjestoPrebivalista().getId();
+                }
+            }
+        }
+        if (!pronadjenoMjestoRodjenja) {
+            maxNedozvoljeniIdMjesta++;
+            vlasnik.getMjestoRodjenja().setId(maxNedozvoljeniIdMjesta);
+        }
+        else vlasnik.getMjestoRodjenja().setId(vlasnici.get(indeksMjestaRodjenja).getMjestoRodjenja().getId());
+        boolean pronadjenoMjestoPrebivalista = false;
+        int indeksMjestaPrebivalista = 0;
+        for (int i = 0; i < vlasnici.size(); i++) {
+            if (vlasnici.get(i).getMjestoPrebivalista().getNaziv().equals(vlasnik.getMjestoPrebivalista().getNaziv())) {
+                indeksMjestaPrebivalista = i;
+                pronadjenoMjestoPrebivalista = true;
+                break;
+            }
+        }
+        if (!pronadjenoMjestoRodjenja && vlasnici.size() != 0) {
+            maxNedozvoljeniIdMjesta = vlasnici.get(0).getMjestoRodjenja().getId();
+            for (int i = 0; i < vlasnici.size(); i++) {
+                if (vlasnici.get(i).getMjestoRodjenja().getId() > maxNedozvoljeniIdMjesta) {
+                    maxNedozvoljeniIdMjesta = vlasnici.get(i).getMjestoRodjenja().getId();
+                }
+                if (vlasnici.get(i).getMjestoPrebivalista().getId() > maxNedozvoljeniIdMjesta) {
+                    maxNedozvoljeniIdMjesta = vlasnici.get(i).getMjestoPrebivalista().getId();
+                }
+            }
+        }
+        if (!pronadjenoMjestoPrebivalista) {
+            vlasnik.getMjestoPrebivalista().setId(maxNedozvoljeniIdMjesta + 1);
+        }
+        else vlasnik.getMjestoPrebivalista().setId
+                (vlasnici.get(indeksMjestaPrebivalista).getMjestoPrebivalista().getId());
         vlasnici.add(vlasnik);
         ArrayList<Vlasnik> vlasnikArrayList = new ArrayList<>();
         vlasnikArrayList.addAll(vlasnici);
@@ -159,24 +211,37 @@ public class VozilaDAOXML implements VozilaDAO {
         vozilo.setId(maxNedozvoljeniIdVozila + 1);
         int maxNedozvoljeniIdProizvodjaca = 0;
         int indeks = 0;
+        ObservableList<Proizvodjac> proizvodjaci = getProizvodjaci();
         boolean pronadjenProizvodjac = false;
-        for (int i = 0; i < vozila.size(); i++) {
-            if (vozila.get(i).getProizvodjac().getNaziv().equals(vozilo.getProizvodjac().getNaziv())) {
+        for (int i = 0; i < proizvodjaci.size(); i++) {
+            if (vozilo.getProizvodjac().getNaziv().equals(proizvodjaci.get(i).getNaziv())) {
                 indeks = i;
                 pronadjenProizvodjac = true;
                 break;
             }
         }
-        if (!pronadjenProizvodjac && vozila.size() != 0) {
-            maxNedozvoljeniIdProizvodjaca = vozila.get(0).getProizvodjac().getId();
-            for (int i = 1; i < vozila.size(); i++) {
-                if (vozila.get(i).getProizvodjac().getId() > maxNedozvoljeniIdProizvodjaca) {
-                    maxNedozvoljeniIdProizvodjaca = vozila.get(i).getProizvodjac().getId();
+        if (!pronadjenProizvodjac && proizvodjaci.size() != 0) {
+            maxNedozvoljeniIdProizvodjaca = proizvodjaci.get(0).getId();
+            for (int i = 1; i < proizvodjaci.size(); i++) {
+                if (proizvodjaci.get(i).getId() > maxNedozvoljeniIdProizvodjaca) {
+                    maxNedozvoljeniIdProizvodjaca = proizvodjaci.get(i).getId();
                 }
             }
         }
-        if (!pronadjenProizvodjac) vozilo.getProizvodjac().setId(maxNedozvoljeniIdProizvodjaca + 1);
-        else vozilo.getProizvodjac().setId(vozila.get(indeks).getProizvodjac().getId());
+        if (!pronadjenProizvodjac) {
+            vozilo.getProizvodjac().setId(maxNedozvoljeniIdProizvodjaca + 1);
+            proizvodjaci.add(vozilo.getProizvodjac());
+            ArrayList<Proizvodjac> proizvodjacArrayList = new ArrayList<>();
+            proizvodjacArrayList.addAll(proizvodjaci);
+            try {
+                izlaz = new XMLEncoder(new FileOutputStream("proizvodjaci.xml"));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            izlaz.writeObject(proizvodjacArrayList);
+            close();
+        }
+        else vozilo.getProizvodjac().setId(proizvodjaci.get(indeks).getId());
         vozila.add(vozilo);
         ArrayList<Vozilo> voziloArrayList = new ArrayList<>();
         voziloArrayList.addAll(vozila);
