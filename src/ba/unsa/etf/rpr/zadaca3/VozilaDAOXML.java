@@ -11,16 +11,14 @@ import java.util.TreeSet;
 
 public class VozilaDAOXML implements VozilaDAO {
 
-    public VozilaDAOXML() {
-
-    }
+    private XMLDecoder ulaz;
 
     public ObservableList<Vlasnik> getVlasnici() {
         ArrayList<Vlasnik> vlasnikArrayList = null;
         try {
-            XMLDecoder ulaz = new XMLDecoder(new FileInputStream("vlasnici.xml"));
+            ulaz = new XMLDecoder(new FileInputStream("vlasnici.xml"));
             vlasnikArrayList = (ArrayList<Vlasnik>) ulaz.readObject();
-            ulaz.close();
+            close();
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -39,9 +37,9 @@ public class VozilaDAOXML implements VozilaDAO {
     public ObservableList<Mjesto> getMjesta() {
         ArrayList<Mjesto> mjestoArrayList = null;
         try {
-            XMLDecoder ulaz = new XMLDecoder(new FileInputStream("mjesta.xml"));
+            ulaz = new XMLDecoder(new FileInputStream("mjesta.xml"));
             mjestoArrayList = (ArrayList<Mjesto>) ulaz.readObject();
-            ulaz.close();
+            close();
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -56,9 +54,9 @@ public class VozilaDAOXML implements VozilaDAO {
     public ObservableList<Vozilo> getVozila() {
         ArrayList<Vozilo> voziloArrayList = null;
         try {
-            XMLDecoder ulaz = new XMLDecoder(new FileInputStream("vozila.xml"));
+            ulaz = new XMLDecoder(new FileInputStream("vozila.xml"));
             voziloArrayList = (ArrayList<Vozilo>) ulaz.readObject();
-            ulaz.close();
+            close();
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -78,16 +76,12 @@ public class VozilaDAOXML implements VozilaDAO {
         return vozila;
     }
 
-    public void dodajVlasnika(Vlasnik testTestovic) {
-
-    }
-
     public ObservableList<Proizvodjac> getProizvodjaci() {
         ArrayList<Proizvodjac> proizvodjacArrayList = null;
         try {
-            XMLDecoder ulaz = new XMLDecoder(new FileInputStream("proizvodjaci.xml"));
+            ulaz = new XMLDecoder(new FileInputStream("proizvodjaci.xml"));
             proizvodjacArrayList = (ArrayList<Proizvodjac>) ulaz.readObject();
-            ulaz.close();
+            close();
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -99,19 +93,11 @@ public class VozilaDAOXML implements VozilaDAO {
         return proizvodjaci;
     }
 
+    public void dodajVlasnika(Vlasnik testTestovic) {
+
+    }
+
     public void promijeniVlasnika(Vlasnik vlasnik) {
-
-    }
-
-    public void promijeniVozilo(Vozilo vozilo) {
-
-    }
-
-    public void dodajVozilo(Vozilo vozilo) {
-
-    }
-
-    public void obrisiVozilo(Vozilo vozilo) {
 
     }
 
@@ -119,7 +105,19 @@ public class VozilaDAOXML implements VozilaDAO {
 
     }
 
-    public void close() {
+    public void dodajVozilo(Vozilo vozilo) {
 
+    }
+
+    public void promijeniVozilo(Vozilo vozilo) {
+
+    }
+
+    public void obrisiVozilo(Vozilo vozilo) {
+
+    }
+
+    public void close() {
+        ulaz.close();
     }
 }
