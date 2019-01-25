@@ -1,7 +1,9 @@
 package ba.unsa.etf.rpr.zadaca3;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 
 public class Vlasnik implements Comparable<Vlasnik>, Serializable {
 
@@ -117,7 +119,7 @@ public class Vlasnik implements Comparable<Vlasnik>, Serializable {
     }
 
     public void setDatumRodjenjaDani(long datumRodjenjaDani) {
-
+        datumRodjenja = Instant.ofEpochSecond(datumRodjenjaDani * 86400).atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
     public long getDatumRodjenjaDani() {

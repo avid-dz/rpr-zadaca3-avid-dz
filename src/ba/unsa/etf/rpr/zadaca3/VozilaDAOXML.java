@@ -16,7 +16,24 @@ public class VozilaDAOXML implements VozilaDAO {
     }
 
     public ObservableList<Vlasnik> getVlasnici() {
-        return FXCollections.observableArrayList();
+        ArrayList<Vlasnik> vlasnikArrayList = null;
+        try {
+            XMLDecoder ulaz = new XMLDecoder(new FileInputStream("vlasnici.xml"));
+            vlasnikArrayList = (ArrayList<Vlasnik>) ulaz.readObject();
+            ulaz.close();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        Set<Vlasnik> skupZaSortiranje = new TreeSet<>((s1, s2) -> {
+            if (s1.getId() < s2.getId()) return -1;
+            else if (s1.getId() == s2.getId()) return 0;
+            else return 1;
+        });
+        skupZaSortiranje.addAll(vlasnikArrayList);
+        vlasnikArrayList.clear();
+        vlasnikArrayList.addAll(skupZaSortiranje);
+        ObservableList<Vlasnik> vlasnici = FXCollections.observableArrayList(vlasnikArrayList);
+        return vlasnici;
     }
 
     public ObservableList<Mjesto> getMjesta() {
