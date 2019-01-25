@@ -372,6 +372,9 @@ public class VozilaDAOBaza implements VozilaDAO {
                 psDodajProizvodjaca.setString(2, vozilo.getProizvodjac().getNaziv());
                 psDodajProizvodjaca.executeUpdate();
             }
+            else {
+                vozilo.getProizvodjac().setId(nadjiProizvodjacaPoNazivu(vozilo.getProizvodjac().getNaziv()).getId());
+            }
             psIzmijeniVozilo.setInt(1, vozilo.getProizvodjac().getId());
             psIzmijeniVozilo.setString(2, vozilo.getModel());
             psIzmijeniVozilo.setString(3, vozilo.getBrojSasije());
