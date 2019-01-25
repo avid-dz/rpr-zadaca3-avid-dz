@@ -12,6 +12,7 @@ public class Vlasnik implements Comparable<Vlasnik>, Serializable {
     private String prezime;
     private String imeRoditelja;
     private LocalDate datumRodjenja;
+    private long datumRodjenjaDani;
     private Mjesto mjestoRodjenja;
     private String adresaPrebivalista;
     private Mjesto mjestoPrebivalista;
@@ -27,6 +28,7 @@ public class Vlasnik implements Comparable<Vlasnik>, Serializable {
         adresaPrebivalista = "";
         mjestoPrebivalista = null;
         jmbg = "";
+        datumRodjenjaDani = 0;
     }
 
     public Vlasnik(int id, String ime, String prezime, String imeRoditelja, LocalDate datumRodjenja,
@@ -40,6 +42,7 @@ public class Vlasnik implements Comparable<Vlasnik>, Serializable {
         this.adresaPrebivalista = adresaPrebivalista;
         this.mjestoPrebivalista = mjestoPrebivalista;
         this.jmbg = jmbg;
+        this.datumRodjenjaDani = datumRodjenja.toEpochDay();
     }
 
     public int getId() {
@@ -80,6 +83,7 @@ public class Vlasnik implements Comparable<Vlasnik>, Serializable {
 
     public void setDatumRodjenja(LocalDate datumRodjenja) {
         this.datumRodjenja = datumRodjenja;
+        this.datumRodjenjaDani = datumRodjenja.toEpochDay();
     }
 
     public Mjesto getMjestoRodjenja() {
@@ -119,11 +123,12 @@ public class Vlasnik implements Comparable<Vlasnik>, Serializable {
     }
 
     public void setDatumRodjenjaDani(long datumRodjenjaDani) {
+        this.datumRodjenjaDani = datumRodjenjaDani;
         datumRodjenja = Instant.ofEpochSecond(datumRodjenjaDani * 86400).atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
     public long getDatumRodjenjaDani() {
-        return 0;
+        return datumRodjenjaDani;
     }
 
     @Override
